@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listFragment">
+
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="romang.montejo.moya.Fragments.ListFragment"
+        android:label="Lista de Recordatorios"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_listFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_addTextReminderFragment"
+            app:destination="@id/addTextReminderFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_addPhotoReminderFragment"
+            app:destination="@id/addPhotoReminderFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_addAudioReminderFragment"
+            app:destination="@id/addAudioReminderFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_findRecFragment"
+            app:destination="@id/findRecFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_archivedListFragment"
+            app:destination="@id/archivedListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="romang.montejo.moya.Fragments.SettingsFragment"
+        android:label="Ajustes" />
+    <fragment
+        android:id="@+id/addTextReminderFragment"
+        android:name="romang.montejo.moya.Fragments.AddTextReminderFragment"
+        android:label="Recordatorio Escrito"
+        tools:layout="@layout/fragment_add_text_reminder">
+        <action
+            android:id="@+id/action_addTextReminderFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPhotoReminderFragment"
+        android:name="romang.montejo.moya.Fragments.AddPhotoReminderFragment"
+        android:label="Recordatorio Visual"
+        tools:layout="@layout/fragment_add_photo_reminder">
+        <action
+            android:id="@+id/action_addPhotoReminderFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAudioReminderFragment"
+        android:name="romang.montejo.moya.Fragments.AddAudioReminderFragment"
+        android:label="Audio Recordatorio "
+        tools:layout="@layout/fragment_add_audio_reminder">
+        <action
+            android:id="@+id/action_addAudioReminderFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/findRecFragment"
+        android:name="romang.montejo.moya.Fragments.FindRecFragment"
+        android:label="Buscar"
+        tools:layout="@layout/fragment_find_rec"/>
+    <fragment
+        android:id="@+id/archivedListFragment"
+        android:name="romang.montejo.moya.Fragments.ArchivedListFragment"
+        android:label="Archivados"
+        tools:layout="@layout/fragment_archived_list" />
+</navigation>

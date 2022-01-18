@@ -1,3 +1,45 @@
 <resources>
     <string name="app_name">Note Keeper</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually request
+        ed</string>
+    <string name="crea_tu_recordatorio_text">Crea tu Recordatorio Textual</string>
+    <string name="crea_tu_recordatorio_photo">Crea tu Recordatorio Visual</string>
+    <string name="titulo">Titulo</string>
+    <string name="notificar">Notificar</string>
+    <string name="contenido">Contenido</string>
+    <string name="textview">TextView</string>
+    <string name="permisos_camera_error">No se poseen los permisos</string>
+    <string name="no_titulo">Ingrese el titulo</string>
+    <string name="no_reminder">Ingrese un Recordatorio</string>
+    <string name="patronTime">dd/MM/YYYY - HH:mm</string>
+    <string name="error_text_reminder">Ups! Algo salio mal al crear el recordatorio. Por favor vuelva a intentarlo</string>
+    <string name="datePicker">Selecione un Fecha</string>
+    <string name="save_ok">Recordatorio guardado</string>
+    <string name="save_sad">No se pudo guardar, intentelo denuevo</string>
+    <string name="text_no_size">El texto del recordatorio no tiene mas lineas</string>
+    <string name="crea_tu_recordatorio_audio">Grabador de voz</string>
+    <string name="loadingScreen">Cargando Recordatorios...</string>
+    <string name="noreminders">No tiene Recordatorios</string>
+    <string name="fuentes">Fuentes</string>
+    <string name="archived">Archivados</string>
+    <string name="text">Texto</string>
+    <string name="photo">Fotos</string>
+    <string name="audio">Audio</string>
+    <string name="oldies">Futuros</string>
+    <string name="find">Buscar</string>
+    <string name="no_text_search">Complete el campo de busqueda</string>
 </resources>
