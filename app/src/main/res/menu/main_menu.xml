@@ -13,4 +13,10 @@
     <item
         android:id="@+id/ajustesSelect"
         android:title="Ajustes" />
+    <item
+        android:id="@+id/help"
+        android:title="Ayuda" />
+    <item
+        android:id="@+id/readme"
+        android:title="Readme" />
 </menu>

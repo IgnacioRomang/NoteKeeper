@@ -1,10 +1,8 @@
 package romang.montejo.moya.Holders;
 
 import android.app.Dialog;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,14 +20,13 @@ public class TextReminderHolder extends RecyclerView.ViewHolder {
 
     public TextReminderHolder(@NonNull View itemView) {
         super(itemView);
-        // TODO: 14/1/2022 HACER UN DIALOG LINDO PARA EL TEXT y el Imagen
         binding = TextReminderHolderBinding.bind(itemView);
         binding.textCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (binding.reminderTextCard.getLineCount() >= 6) {
                     Dialog dialog = new Dialog(v.getContext());
-                    dialog.setContentView(R.layout.inspection_text_reminder);
+                    dialog.setContentView(R.layout.dialog_inspection_text_reminder);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     TextView textView = dialog.findViewById(R.id.titleTextCard);
                     textView.setText(binding.titleTextCard.getText());

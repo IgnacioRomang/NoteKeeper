@@ -28,7 +28,7 @@ public class PhotoReminderHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(v.getContext());
-                dialog.setContentView(R.layout.inspacion_photo_reminder);
+                dialog.setContentView(R.layout.dialog_inspection_photo_reminder);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 TextView textView = dialog.findViewById(R.id.titleCardPhoto);
                 textView.setText(binding.titleCardPhoto.getText());

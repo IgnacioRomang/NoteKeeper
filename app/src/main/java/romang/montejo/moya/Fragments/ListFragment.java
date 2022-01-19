@@ -1,11 +1,13 @@
 package romang.montejo.moya.Fragments;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +31,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.leinardi.android.speeddial.SpeedDialActionItem;
@@ -210,6 +216,32 @@ public class ListFragment extends Fragment {
                 break;
             case R.id.archived:
                 NavHostFragment.findNavController(ListFragment.this).navigate(R.id.action_listFragment_to_archivedListFragment);
+            case R.id.help:
+                // TODO: 19/1/2022 Make tutorial
+                break;
+            case R.id.readme:
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.dialog_readme_view);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                WebView webView = dialog.findViewById(R.id.readmeview);
+                webView.getSettings().setJavaScriptEnabled(true);
+                webView.setWebViewClient(new WebViewClient() {
+                    @SuppressWarnings("deprecation")
+                    @Override
+                    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                        Toast.makeText(getActivity(), description, Toast.LENGTH_SHORT).show();
+                    }
+                    @TargetApi(android.os.Build.VERSION_CODES.M)
+                    @Override
+                    public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
+                        // Redirect to deprecated method, so you can use it in all SDK versions
+                        onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
+                    }
+                });
+
+                webView .loadUrl("https://github.com/IgnacioRomang/NoteKeeper/tree/develop#notekepper");
+                dialog.show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

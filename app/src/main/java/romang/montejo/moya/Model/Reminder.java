@@ -1,6 +1,9 @@
 package romang.montejo.moya.Model;
 
-public class Reminder {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Reminder{
     private String title;
     private Long time;
     private Boolean noti;

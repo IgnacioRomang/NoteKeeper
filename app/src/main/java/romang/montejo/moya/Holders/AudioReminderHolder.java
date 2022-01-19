@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
-import java.text.SimpleDateFormat;
-
-import romang.montejo.moya.MediaPlayerInHolderManager;
+import romang.montejo.moya.Util.MediaPlayerInHolderManager;
 import romang.montejo.moya.databinding.AudioReminderHolderBinding;
 
 public class AudioReminderHolder extends RecyclerView.ViewHolder {
@@ -61,7 +59,5 @@ public class AudioReminderHolder extends RecyclerView.ViewHolder {
                 binding.playHolderbutton.callOnClick();
             }
         });
-        //binding.seekBar.setMax((int)(record_time/1000));
-        // TODO: 13/1/2022 Terminar
     }
 }

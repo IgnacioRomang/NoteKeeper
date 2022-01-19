@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Runnable tenSecond = new Runnable() {
         public void run() {
-            binding.loadingCard.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
             start=true;
         }
     };
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        NotificationsManager.getInstance(getBaseContext());
+
         start = false;
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
@@ -82,17 +85,19 @@ public class MainActivity extends AppCompatActivity {
         lista.add(test2);
         */
 
+        // TODO: 18/1/2022 crear una clase que maneje las notificaciones que sea singleton 
+
         viewModel.liveData.setValue(lista);
 
         viewModel.liveData.observe(MainActivity.this, new Observer<List<Reminder>>() {
             @Override
             public void onChanged(List<Reminder> reminders) {
                 if (!reminders.isEmpty()) {
-                    binding.loadingCard.setVisibility(View.GONE);
+                    binding.progressBar.setVisibility(View.GONE);
                 }
             }
         });
-        binding.loadingCard.postDelayed(tenSecond, 10000);
+        binding.progressBar.postDelayed(tenSecond, 10000);
         viewModel.setContext(getApplicationContext());
         viewModel.getResult().observe(this, new Observer<Boolean>() {
             @Override
@@ -111,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp() {
-        //
+
         if (!(navController.navigateUp() || super.onSupportNavigateUp())) {
             onBackPressed();
         }

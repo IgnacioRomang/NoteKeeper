@@ -158,6 +158,7 @@ public class MainViewModel extends ViewModel {
             @Override
             public void result(boolean exito) {
                 result.postValue(exito);
+                NotificationsManager.lauchNotification(reminder);
             }
         });
         liveData.setValue(list);

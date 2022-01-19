@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.ListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"

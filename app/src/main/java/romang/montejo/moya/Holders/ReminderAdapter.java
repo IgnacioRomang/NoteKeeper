@@ -69,7 +69,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // TODO: 11/1/2022 AGREGAR EL RESTO
         View view;
         RecyclerView.ViewHolder reminder = null;
         switch (viewType) {

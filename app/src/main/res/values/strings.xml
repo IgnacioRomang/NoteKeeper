@@ -42,4 +42,5 @@
     <string name="oldies">Futuros</string>
     <string name="find">Buscar</string>
     <string name="no_text_search">Complete el campo de busqueda</string>
+    <string name="summaryNofText">Notificacion desde NoteKeeper</string>
 </resources>

@@ -29,10 +29,10 @@ public class StorageManager implements  DbCallBacks{
     private static final String DB_NAME ="romang.montejo.moya.Persistence";
     private DAO myDao;
     private static StorageManager instance;
-    private static final int NOONE = 0;
-    private static final int TEXT_TYPE = 1;
-    private static final int IMG_TYPE = 2;
-    private static final int AUD_TYPE = 3;
+    public static final int NOONE = 0;
+    public static final int TEXT_TYPE = 1;
+    public static final int IMG_TYPE = 2;
+    public static final int AUD_TYPE = 3;
 
     public static int getItemType(Reminder reminder) {
         if (reminder instanceof TextReminder) {

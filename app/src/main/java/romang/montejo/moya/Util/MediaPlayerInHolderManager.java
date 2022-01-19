@@ -1,4 +1,4 @@
-package romang.montejo.moya;
+package romang.montejo.moya.Util;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -6,17 +6,12 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.SeekBar;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Room;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import romang.montejo.moya.Holders.AudioReminderHolder;
-import romang.montejo.moya.Persistence.DAO;
-import romang.montejo.moya.Persistence.MyRoomDB;
-import romang.montejo.moya.Persistence.StorageManager;
+import romang.montejo.moya.R;
 
 public class MediaPlayerInHolderManager {
     private AudioReminderHolder currentHolder;
@@ -97,7 +92,6 @@ public class MediaPlayerInHolderManager {
     private Runnable onEverySecond = new Runnable() {
         public void run() {
             if (player != null) {
-                // TODO: 17/1/2022 agregar formato al texto MM:ss
                 int pos = player.getCurrentPosition() / 1000;
                 currentHolder.getTimerText().setText(formatdate.format(new Date(player.getCurrentPosition())));
                 currentHolder.getSeekBar().setProgress(pos);
