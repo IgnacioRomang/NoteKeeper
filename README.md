@@ -1,5 +1,6 @@
-# NoteKepper
-
+# Tutorial
+1 [Agregar Recordatorio](web/addReminders.md)
+# Notas "Tecnicas"
 ## Bugs Conocidos
 
 ~~- Al ingresar las fechas: Si se cambia mucho la hora suma dias a la fecha.~~
