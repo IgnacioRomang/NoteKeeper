@@ -217,9 +217,6 @@ public class ListFragment extends Fragment {
             case R.id.archived:
                 NavHostFragment.findNavController(ListFragment.this).navigate(R.id.action_listFragment_to_archivedListFragment);
             case R.id.help:
-                // TODO: 19/1/2022 Make tutorial
-                break;
-            case R.id.readme:
                 Dialog dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.dialog_readme_view);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -239,7 +236,7 @@ public class ListFragment extends Fragment {
                     }
                 });
 
-                webView .loadUrl("https://github.com/IgnacioRomang/NoteKeeper/tree/develop#notekepper");
+                webView .loadUrl("https://ignacioromang.github.io/NoteKeeper/");
                 dialog.show();
                 break;
         }

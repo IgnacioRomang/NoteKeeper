@@ -3,33 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/findb.xml" value="0.2" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/ic_baseline_access_time_24.xml" value="0.22552083333333334" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.175" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.22552083333333334" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.22552083333333334" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/ic_baseline_create_24.xml" value="0.19722222222222222" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/ic_baseline_mic_24.xml" value="0.19444444444444445" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.1" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.19814814814814816" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/drawable/shape.xml" value="0.19722222222222222" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/activity_add_text_reminder.xml" value="0.33" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/audio_reminder_holder.xml" value="0.1" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/dialog_readme_view.xml" value="0.1" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/fragment_add_audio_reminder.xml" value="0.25" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/fragment_add_photo_reminder.xml" value="0.25" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/fragment_add_text_reminder.xml" value="0.1" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/fragment_archived_list.xml" value="0.18" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/fragment_find_rec.xml" value="0.25" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/fragment_list.xml" value="0.2111111111111111" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/inspacion_photo_reminder.xml" value="0.25" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/inspection_text_reminder.xml" value="0.33" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/photo_reminder_holder.xml" value="0.1" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/layout/text_reminder_holder.xml" value="0.1" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/menu/main_menu.xml" value="0.18" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/xml/file_paths.xml" value="0.1" />
-        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/xml/root_preferences.xml" value="0.33" />
+        <entry key="..\:/Users/Ignac/AndroidStudioProjects/NoteKeeper/app/src/main/res/menu/main_menu.xml" value="0.209375" />
       </map>
     </option>
   </component>
