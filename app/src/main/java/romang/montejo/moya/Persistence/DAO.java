@@ -21,9 +21,9 @@ public interface DAO {
     @Query("SELECT * FROM PhotoReminder") List<PhotoReminder> getAllPhotoReminder();
     @Query("SELECT * FROM AudioReminder") List<AudioReminder> getAllAudioReminder();
 
-    @Query("SELECT * FROM TextReminder WHERE datetime(time/1000, 'unixepoch') >= datetime('now', 'localtime', '-5 minutes') ") List<TextReminder> getTextReminder();
-    @Query("SELECT * FROM PhotoReminder WHERE datetime(time/1000, 'unixepoch') >= datetime('now', 'localtime', '-5 minutes') ") List<PhotoReminder> getPhotoReminder();
-    @Query("SELECT * FROM AudioReminder WHERE datetime(time/1000, 'unixepoch') >= datetime('now', 'localtime', '-5 minutes') ") List<AudioReminder> getAudioReminder();
+    @Query("SELECT * FROM TextReminder WHERE datetime(time/1000, 'unixepoch') >= datetime('now', '-2 seconds') ") List<TextReminder> getTextReminder();
+    @Query("SELECT * FROM PhotoReminder WHERE datetime(time/1000, 'unixepoch') >= datetime('now', '-2 seconds') ") List<PhotoReminder> getPhotoReminder();
+    @Query("SELECT * FROM AudioReminder WHERE datetime(time/1000, 'unixepoch') >= datetime('now', '-2 secondss') ") List<AudioReminder> getAudioReminder();
 
     @Query("SELECT * FROM TextReminder WHERE title LIKE '%' || :search || '%' OR reminderText LIKE '%' || :search || '%'") List<TextReminder> findTextReminder(String search);
     @Query("SELECT * FROM PhotoReminder WHERE title LIKE '%' || :search || '%'") List<PhotoReminder> findPhotoReminder(String search);

@@ -3,10 +3,13 @@ package romang.montejo.moya.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -37,32 +40,21 @@ public class AddTextReminderFragment extends Fragment {
     private FragmentAddTextReminderBinding binding;
     private MaterialDatePicker datePicker;
     private MaterialTimePicker timePicker;
+    private MutableLiveData<Calendar> calendarLiveData;
     private static Boolean error;
 
     private MainViewModel viewModel;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public AddTextReminderFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddTextReminderFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static AddTextReminderFragment newInstance(String param1, String param2) {
         AddTextReminderFragment fragment = new AddTextReminderFragment();
         Bundle args = new Bundle();
@@ -79,47 +71,47 @@ public class AddTextReminderFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        setHasOptionsMenu(true);
         error = false;
+        viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentAddTextReminderBinding.inflate(inflater, container, false);
-        setHasOptionsMenu(false);
-        viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
-
-        binding.dateText.setText(viewModel.getTimeString(MaterialDatePicker.todayInUtcMilliseconds()));
-
+        calendarLiveData = new MutableLiveData<>();
+        calendarLiveData.setValue(Calendar.getInstance());
         //set de los pickets
+
         datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(getString(R.string.datePicker))
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setSelection(calendarLiveData.getValue().getTimeInMillis())
                 .build();
+
+        binding.dateText.setText(viewModel.getTimeString(calendarLiveData.getValue().getTimeInMillis()));
+
         timePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(00)
-                .setMinute(15)
+                .setHour(calendarLiveData.getValue().get(Calendar.HOUR))
+                .setMinute(calendarLiveData.getValue().get(Calendar.MINUTE))
                 .build();
 
         timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.setTime(timePicker.getHour(), timePicker.getMinute());
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setTime(calendarLiveData.getValue(),timePicker.getHour(),timePicker.getMinute()));
             }
         });
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long selection) {
-                viewModel.setDate(selection);
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setDate(calendarLiveData.getValue(),selection));
             }
         });
-        // TODO: 10/1/2022 Realizar los observers de los livedata
         viewModel.getCalendarMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Calendar>() {
             @Override
             public void onChanged(Calendar calendar) {
-                binding.dateText.setText(viewModel.getTimeString(calendar.getTime().getTime()));
+                binding.dateText.setText(viewModel.getTimeString(calendarLiveData.getValue().getTimeInMillis()));
             }
         });
 
@@ -137,7 +129,6 @@ public class AddTextReminderFragment extends Fragment {
                 }
             }
         });
-
         binding.calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,6 +163,7 @@ public class AddTextReminderFragment extends Fragment {
                 if (error) {
                     Toast.makeText(getActivity().getBaseContext(), getString(R.string.error_text_reminder), Toast.LENGTH_LONG).show();
                 } else {
+                    viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
                     viewModel.createTextReminder(binding.tituloEditText.getText().toString(),
                             binding.reminderEditText.getText().toString(),
                             binding.checkNotif.isChecked());
@@ -181,5 +173,6 @@ public class AddTextReminderFragment extends Fragment {
         });
         return binding.getRoot();
     }
+
 
 }

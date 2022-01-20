@@ -29,6 +29,7 @@ public class MainViewModel extends ViewModel {
     public ReminderAdapter adapter;
     public String currentPath;
     private Context context;
+    public Bitmap photo;
 
     public MutableLiveData<Boolean> getResult() {
         if (result == null) {
@@ -56,8 +57,6 @@ public class MainViewModel extends ViewModel {
         this.photo = photo;
     }
 
-    public Bitmap photo;
-
     public List<Reminder> getList() {
         if (liveData == null) {
             liveData = new MutableLiveData<>();
@@ -65,12 +64,14 @@ public class MainViewModel extends ViewModel {
         }
         return liveData.getValue();
     }
+
     public void setList(List<Reminder> list) {
         if (liveData == null) {
             liveData = new MutableLiveData<>();
         }
         liveData.postValue(list);
     }
+
     public MutableLiveData<Calendar> getCalendarMutableLiveData() {
         if (calendarMutableLiveData == null) {
             calendarMutableLiveData = new MutableLiveData<Calendar>();
@@ -79,7 +80,11 @@ public class MainViewModel extends ViewModel {
         return calendarMutableLiveData;
     }
 
-    public void setDate(Long selection) {
+    public void setCalendarMutableLiveData(MutableLiveData<Calendar> calendarMutableLiveData) {
+        this.calendarMutableLiveData = calendarMutableLiveData;
+    }
+
+    public Calendar setDate(Calendar calen,Long selection) {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.setTimeInMillis(selection);
         Date c = calendar.getTime();
@@ -87,36 +92,21 @@ public class MainViewModel extends ViewModel {
         year = c.getYear() + 1900;
         month = c.getMonth();
         day = c.getDate() + 1;
-        if (calendarMutableLiveData == null) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(year, month, day);
-            calendarMutableLiveData = new MutableLiveData<Calendar>();
-            calendarMutableLiveData.setValue(cal);
-        } else {
-            Calendar calOld = calendarMutableLiveData.getValue();
-            calOld.set(Calendar.YEAR, year);
-            calOld.set(Calendar.MONTH, month);
-            calOld.set(Calendar.DAY_OF_MONTH, day); //algo estoy haciendo mal
-            calendarMutableLiveData.postValue(calOld);
-        }
+        calen.set(Calendar.YEAR, year);
+        calen.set(Calendar.MONTH, month);
+        calen.set(Calendar.DAY_OF_MONTH, day);
+        return calen;
     }
+
     public String getTimeString(Long time) {
         SimpleDateFormat formatoF = new SimpleDateFormat("dd/MM/YYYY - HH:mm");
         return formatoF.format(time);
     }
-    public void setTime(int hour, int min) {
-        if (calendarMutableLiveData == null) {
-            calendarMutableLiveData = new MutableLiveData<Calendar>();
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR, hour);
-            cal.set(Calendar.MINUTE, min);
-            calendarMutableLiveData.setValue(cal);
-        } else {
-            Calendar cal = calendarMutableLiveData.getValue();
-            cal.set(Calendar.HOUR_OF_DAY, hour);
-            cal.set(Calendar.MINUTE, min);
-            calendarMutableLiveData.postValue(cal);
-        }
+
+    public Calendar setTime(Calendar calendar,int hour, int min) {
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, min);
+        return calendar;
     }
 
     public void createAudioReminder(String title, boolean checked, long record_time) {
@@ -128,6 +118,7 @@ public class MainViewModel extends ViewModel {
         reminder.setRecordTime(record_time);
         saveReminder(reminder);
     }
+
     public void createTextReminder(String title, String reminderText, boolean checked) {
         if (!checked) {
             calendarMutableLiveData.setValue(Calendar.getInstance());
@@ -135,6 +126,7 @@ public class MainViewModel extends ViewModel {
         TextReminder reminder = new TextReminder(title, calendarMutableLiveData.getValue().getTimeInMillis(), checked, reminderText);
         saveReminder(reminder);
     }
+
     public void createPhotoReminder(String title, boolean checked) {
         if (!checked) {
             calendarMutableLiveData.setValue(Calendar.getInstance());
@@ -143,7 +135,8 @@ public class MainViewModel extends ViewModel {
         reminder.setCurrentPhotoPath(currentPath);
         saveReminder(reminder);
     }
-    public void saveReminder(Reminder reminder){
+
+    public void saveReminder(Reminder reminder) {
         List<Reminder> list;
         if (liveData == null) {
             liveData = new MutableLiveData<>();
@@ -151,14 +144,19 @@ public class MainViewModel extends ViewModel {
         } else {
             list = liveData.getValue();
         }
-        if(reminder.getTime()>= (new Date()).getTime()){
+        if (reminder.getTime() >= (Calendar.getInstance().getTimeInMillis()-1000*120)) {
             list.add(reminder);
         }
         StorageManager.getInstance(null).addReminder(reminder, new DbCallBacks.saveResultCallback() {
             @Override
             public void result(boolean exito) {
                 result.postValue(exito);
-                NotificationsManager.lauchNotification(reminder);
+                Calendar calendar= Calendar.getInstance();
+                int min = calendar.get(Calendar.MINUTE);
+                calendar.set(Calendar.MINUTE,min-2);
+                if (reminder.getNoti() && reminder.getTime()>= calendar.getTimeInMillis()) {
+                    NotificationsManager.lauchNotification(reminder);
+                }
             }
         });
         liveData.setValue(list);
@@ -179,8 +177,8 @@ public class MainViewModel extends ViewModel {
                     break;
                 case R.id.oldiesChip:
                     Date today = new Date();
-                    today.setMinutes(today.getMinutes()-5);// 5 min antes
-                    result= result.stream().filter((x)-> x.getTime()>=today.getTime()).collect(Collectors.toList());
+                    today.setMinutes(today.getMinutes() - 5);// 5 min antes
+                    result = result.stream().filter((x) -> x.getTime() >= today.getTime()).collect(Collectors.toList());
                     break;
             }
         }

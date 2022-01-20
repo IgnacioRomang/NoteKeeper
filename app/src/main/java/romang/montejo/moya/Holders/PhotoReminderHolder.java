@@ -15,14 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 
 import romang.montejo.moya.R;
-import romang.montejo.moya.databinding.PhotoReminderHolderBinding;
+import romang.montejo.moya.databinding.HolderReminderPhotoBinding;
 
 public class PhotoReminderHolder extends RecyclerView.ViewHolder {
-    public PhotoReminderHolderBinding binding;
+    public HolderReminderPhotoBinding binding;
     public boolean defaultPhoto;
+
     public PhotoReminderHolder(@NonNull View itemView) {
         super(itemView);
-        binding = PhotoReminderHolderBinding.bind(itemView);
+        binding = HolderReminderPhotoBinding.bind(itemView);
         defaultPhoto=false;
         binding.bigCard.setOnClickListener(new View.OnClickListener() {
             @Override

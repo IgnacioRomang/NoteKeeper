@@ -1,11 +1,14 @@
 package romang.montejo.moya;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.attachBaseContext(baseContext);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(baseContext);
         boolean isDark = prefs.getBoolean("darkmode", false);
+        // TODO: 19/1/2022 Mejorar el modo oscuros
 
         if (isDark)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         lista.add(test2);
         */
 
-        // TODO: 18/1/2022 crear una clase que maneje las notificaciones que sea singleton 
+        // TODO: 18/1/2022 crear una clase que maneje las notificaciones que sea singleton
 
         viewModel.liveData.setValue(lista);
 
@@ -113,13 +117,21 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                if(binding.progressBar.getVisibility()== View.VISIBLE && destination.getId()!=R.id.listFragment){
+                    binding.progressBar.setVisibility(View.INVISIBLE );
+                }
+            }
+        });
     }
     @Override
     public boolean onSupportNavigateUp() {
-
         if (!(navController.navigateUp() || super.onSupportNavigateUp())) {
             onBackPressed();
         }
         return true;
     }
+
 }

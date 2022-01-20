@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,7 +48,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import romang.montejo.moya.MainActivity;
 import romang.montejo.moya.Model.Reminder;
+import romang.montejo.moya.NotificationsManager;
 import romang.montejo.moya.Persistence.DbCallBacks;
 import romang.montejo.moya.Persistence.StorageManager;
 import romang.montejo.moya.R;
@@ -116,11 +120,13 @@ public class ListFragment extends Fragment {
             @Override
             public void result(boolean exito, List<Reminder> recordatorios) {
                 viewModel.setList(recordatorios);
-                if(viewModel.adapter.getItemCount()== 0){
+                if (viewModel.adapter.getItemCount() == 0) {
                     viewModel.adapter.addList(recordatorios);
+                    NotificationsManager.startingLauchNotifications(recordatorios);
                 }
             }
         });
+
         binding.recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         binding.recyclerView.setLayoutManager(layoutManager);
@@ -143,7 +149,6 @@ public class ListFragment extends Fragment {
             @Override
 
             public boolean onActionSelected(SpeedDialActionItem actionItem) {
-                // TODO: 7/1/2022 Agregar mas botones
                 switch (actionItem.getId()) {
                     case R.id.text:
                         NavHostFragment.findNavController(ListFragment.this).navigate(R.id.action_listFragment_to_addTextReminderFragment);
@@ -169,6 +174,7 @@ public class ListFragment extends Fragment {
         });
         return binding.getRoot();
     }
+
     private File createImageFile() throws IOException {
         // https://developer.android.com/training/camera/photobasics?hl=es-419
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -182,6 +188,7 @@ public class ListFragment extends Fragment {
         viewModel.currentPath = image.getAbsolutePath();
         return image;
     }
+
     private void camaraStart() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -203,8 +210,9 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.main_menu,menu);
+        inflater.inflate(R.menu.main_menu, menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -216,6 +224,7 @@ public class ListFragment extends Fragment {
                 break;
             case R.id.archived:
                 NavHostFragment.findNavController(ListFragment.this).navigate(R.id.action_listFragment_to_archivedListFragment);
+                break;
             case R.id.help:
                 Dialog dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.dialog_readme_view);
@@ -228,6 +237,7 @@ public class ListFragment extends Fragment {
                     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                         Toast.makeText(getActivity(), description, Toast.LENGTH_SHORT).show();
                     }
+
                     @TargetApi(android.os.Build.VERSION_CODES.M)
                     @Override
                     public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
@@ -236,7 +246,7 @@ public class ListFragment extends Fragment {
                     }
                 });
 
-                webView .loadUrl("https://ignacioromang.github.io/NoteKeeper/");
+                webView.loadUrl("https://ignacioromang.github.io/NoteKeeper/");
                 dialog.show();
                 break;
         }

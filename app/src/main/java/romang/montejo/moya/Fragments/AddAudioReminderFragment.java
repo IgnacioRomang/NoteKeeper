@@ -12,11 +12,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Environment;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +59,7 @@ public class AddAudioReminderFragment extends Fragment {
     private MainViewModel viewModel;
     private MaterialDatePicker datePicker;
     private MaterialTimePicker timePicker;
+    private MutableLiveData<Calendar> calendarLiveData;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -104,10 +107,7 @@ public class AddAudioReminderFragment extends Fragment {
         binding = FragmentAddAudioReminderBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
 
-
         binding.recordButton.setRecordView(binding.recordView);
-
-        //set media record
 
         binding.recordView.setOnRecordListener(new OnRecordListener() {
             @Override
@@ -169,8 +169,6 @@ public class AddAudioReminderFragment extends Fragment {
             }
         });
 
-
-
         binding.playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,6 +190,7 @@ public class AddAudioReminderFragment extends Fragment {
                 if(title.isEmpty()){
                     title = file.getName();
                 }
+                viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
                 viewModel.createAudioReminder(title,binding.checkNotif.isChecked(),record_time);
                 file = null;
                 NavHostFragment.findNavController(AddAudioReminderFragment.this).navigate(R.id.action_addAudioReminderFragment_to_listFragment);
@@ -212,38 +211,39 @@ public class AddAudioReminderFragment extends Fragment {
                 return false;
             }
         });
+        calendarLiveData = new MutableLiveData<>();
+        calendarLiveData.setValue(Calendar.getInstance());
 
-        binding.dateText.setText(viewModel.getTimeString(MaterialDatePicker.todayInUtcMilliseconds()));
-        //set de los pickets
         datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(getString(R.string.datePicker))
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setSelection(calendarLiveData.getValue().getTimeInMillis())
                 .build();
+
+        binding.dateText.setText(viewModel.getTimeString(calendarLiveData.getValue().getTimeInMillis()));
         timePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(00)
-                .setMinute(15)
+                .setHour(calendarLiveData.getValue().get(Calendar.HOUR_OF_DAY))
+                .setMinute(calendarLiveData.getValue().get(Calendar.MINUTE))
                 .build();
 
         timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.setTime(timePicker.getHour(), timePicker.getMinute());
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setTime(calendarLiveData.getValue(),timePicker.getHour(),timePicker.getMinute()));
             }
         });
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long selection) {
-                viewModel.setDate(selection);
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setDate(calendarLiveData.getValue(),selection));
             }
         });
         viewModel.getCalendarMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Calendar>() {
             @Override
             public void onChanged(Calendar calendar) {
-                binding.dateText.setText(viewModel.getTimeString(calendar.getTime().getTime()));
+                binding.dateText.setText(viewModel.getTimeString(calendarLiveData.getValue().getTimeInMillis()));
             }
         });
-        // Configuro botones para mostrar los Pickers
         binding.checkNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -256,7 +256,6 @@ public class AddAudioReminderFragment extends Fragment {
                 }
             }
         });
-
         binding.calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

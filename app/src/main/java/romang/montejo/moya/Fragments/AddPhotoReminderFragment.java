@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -37,6 +38,7 @@ public class AddPhotoReminderFragment extends Fragment {
     private MaterialDatePicker datePicker;
     private MaterialTimePicker timePicker;
     private static Boolean error;
+    private MutableLiveData<Calendar> calendarLiveData;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -77,55 +79,52 @@ public class AddPhotoReminderFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentAddPhotoReminderBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
 
         binding.imageView.setImageBitmap(BitmapFactory.decodeFile(viewModel.currentPath));
-
-        binding.dateText.setText(viewModel.getTimeString(MaterialDatePicker.todayInUtcMilliseconds()));
-
-        viewModel.getCalendarMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Calendar>() {
-            @Override
-            public void onChanged(Calendar calendar) {
-                binding.dateText.setText(viewModel.getTimeString(calendar.getTime().getTime()));
-            }
-        });
-
+        calendarLiveData = new MutableLiveData<>();
+        calendarLiveData.setValue(Calendar.getInstance());
         //set de los pickets
+
         datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(getString(R.string.datePicker))
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setSelection(calendarLiveData.getValue().getTimeInMillis())
                 .build();
+
+        binding.dateText.setText(viewModel.getTimeString(calendarLiveData.getValue().getTimeInMillis()));
+
         timePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(00)
-                .setMinute(15)
+                .setHour(calendarLiveData.getValue().get(Calendar.HOUR))
+                .setMinute(calendarLiveData.getValue().get(Calendar.MINUTE))
                 .build();
 
         timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.setTime(timePicker.getHour(), timePicker.getMinute());
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setTime(calendarLiveData.getValue(),timePicker.getHour(),timePicker.getMinute()));
             }
         });
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long selection) {
-                viewModel.setDate(selection);
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setDate(calendarLiveData.getValue(),selection));
             }
         });
         // TODO: 10/1/2022 Realizar los observers de los livedata
         viewModel.getCalendarMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Calendar>() {
             @Override
             public void onChanged(Calendar calendar) {
-                binding.dateText.setText(viewModel.getTimeString(calendar.getTime().getTime()));
+                binding.dateText.setText(viewModel.getTimeString(calendarLiveData.getValue().getTimeInMillis()));
             }
         });
+
         // Configuro botones para mostrar los Pickers
         binding.checkNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -167,6 +166,7 @@ public class AddPhotoReminderFragment extends Fragment {
                 if (error) {
                     Toast.makeText(getActivity().getBaseContext(), getString(R.string.error_text_reminder), Toast.LENGTH_LONG).show();
                 } else {
+                    viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
                     viewModel.createPhotoReminder(binding.tituloEditText.getText().toString(),binding.checkNotif.isChecked());
                     NavHostFragment.findNavController(AddPhotoReminderFragment.this).navigate(R.id.action_addPhotoReminderFragment_to_listFragment);
                 }

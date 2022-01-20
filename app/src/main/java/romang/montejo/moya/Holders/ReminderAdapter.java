@@ -1,34 +1,20 @@
 package romang.montejo.moya.Holders;
 
-import android.content.res.AssetManager;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.content.res.loader.AssetsProvider;
-import android.content.res.loader.ResourcesProvider;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Picture;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.datepicker.MaterialDatePicker;
-
 import java.io.File;
-import java.io.FileDescriptor;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
-import romang.montejo.moya.Holders.TextReminderHolder;
 import romang.montejo.moya.Model.AudioReminder;
 import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.Reminder;
@@ -73,15 +59,15 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RecyclerView.ViewHolder reminder = null;
         switch (viewType) {
             case TEXT_TYPE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_reminder_holder, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.holder_reminder_text, parent, false);
                 reminder = new TextReminderHolder(view);
                 break;
             case IMG_TYPE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_reminder_holder, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.holder_reminder_photo, parent, false);
                 reminder = new PhotoReminderHolder(view);
                 break;
             case AUD_TYPE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.audio_reminder_holder, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.holder_reminder_audio, parent, false);
                 reminder = new AudioReminderHolder(view);
                 break;
         }

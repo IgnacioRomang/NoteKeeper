@@ -12,15 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import romang.montejo.moya.R;
-import romang.montejo.moya.databinding.TextReminderHolderBinding;
+import romang.montejo.moya.databinding.HolderReminderTextBinding;
 
 public class TextReminderHolder extends RecyclerView.ViewHolder {
-    public TextReminderHolderBinding binding;
+    public HolderReminderTextBinding binding;
 
 
     public TextReminderHolder(@NonNull View itemView) {
         super(itemView);
-        binding = TextReminderHolderBinding.bind(itemView);
+        binding = HolderReminderTextBinding.bind(itemView);
         binding.textCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
