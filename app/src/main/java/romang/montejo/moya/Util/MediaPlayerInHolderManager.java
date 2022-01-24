@@ -1,6 +1,8 @@
 package romang.montejo.moya.Util;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
@@ -10,14 +12,15 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import romang.montejo.moya.Broadcaster.ReminderBroadcaster;
 import romang.montejo.moya.Holders.AudioReminderHolder;
 import romang.montejo.moya.R;
 
-public class MediaPlayerInHolderManager {
+public class MediaPlayerInHolderManager  {
     private AudioReminderHolder currentHolder;
     private static MediaPlayerInHolderManager instance;
     private MediaPlayer player;
-
+    private MediaPlayer nplayer;
 
     private MediaPlayerInHolderManager(Context ctx, AudioReminderHolder holder) {
         currentHolder = holder;
@@ -88,7 +91,7 @@ public class MediaPlayerInHolderManager {
         return instance;
     }
 
-    private SimpleDateFormat formatdate = new SimpleDateFormat("mm:ss");
+    public static SimpleDateFormat formatdate = new SimpleDateFormat("mm:ss");
     private Runnable onEverySecond = new Runnable() {
         public void run() {
             if (player != null) {
@@ -127,5 +130,6 @@ public class MediaPlayerInHolderManager {
     public void pause() {
         player.pause();
     }
+
 }
 

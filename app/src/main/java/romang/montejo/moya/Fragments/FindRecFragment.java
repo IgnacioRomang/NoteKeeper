@@ -84,7 +84,7 @@ public class FindRecFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         notFinded = new MutableLiveData<>();
-        notFinded.setValue(false);
+        //notFinded.setValue(false);
     }
 
     @Override

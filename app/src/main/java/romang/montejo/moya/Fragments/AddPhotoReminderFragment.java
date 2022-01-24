@@ -1,5 +1,7 @@
 package romang.montejo.moya.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
@@ -166,9 +168,27 @@ public class AddPhotoReminderFragment extends Fragment {
                 if (error) {
                     Toast.makeText(getActivity().getBaseContext(), getString(R.string.error_text_reminder), Toast.LENGTH_LONG).show();
                 } else {
-                    viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
-                    viewModel.createPhotoReminder(binding.tituloEditText.getText().toString(),binding.checkNotif.isChecked());
-                    NavHostFragment.findNavController(AddPhotoReminderFragment.this).navigate(R.id.action_addPhotoReminderFragment_to_listFragment);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle(getString(R.string.adv_titulo))
+                            .setMessage(getString(R.string.adv_content));
+                    dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finishJob();
+                        }
+                    });
+                    dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-360*1000)){
+                        dialog.show();
+                    }
+                    else{
+                        finishJob();
+                    }
                 }
             }
         });
@@ -176,4 +196,9 @@ public class AddPhotoReminderFragment extends Fragment {
         //viewModel.createPhotoReminder(Bitmap);
         return binding.getRoot();
     }
+    public void finishJob(){
+        viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
+        viewModel.createPhotoReminder(binding.tituloEditText.getText().toString(),binding.checkNotif.isChecked());
+        NavHostFragment.findNavController(AddPhotoReminderFragment.this).navigate(R.id.action_addPhotoReminderFragment_to_listFragment);
+    };
 }

@@ -3,6 +3,9 @@ package romang.montejo.moya.Fragments;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -23,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.devlomi.record_view.OnRecordListener;
 import com.devlomi.record_view.RecordPermissionHandler;
@@ -61,12 +65,9 @@ public class AddAudioReminderFragment extends Fragment {
     private MaterialTimePicker timePicker;
     private MutableLiveData<Calendar> calendarLiveData;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -74,15 +75,6 @@ public class AddAudioReminderFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddAudioReminderFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static AddAudioReminderFragment newInstance(String param1, String param2) {
         AddAudioReminderFragment fragment = new AddAudioReminderFragment();
         Bundle args = new Bundle();
@@ -92,6 +84,18 @@ public class AddAudioReminderFragment extends Fragment {
         return fragment;
     }
 
+    public void finishJob(){
+        viewModel.currentPath= file.getAbsolutePath();
+        String title = binding.tituloEditText.getText().toString();
+        if(title.isEmpty()){
+            title = file.getName();
+        }
+        if(mediaPlayer.isPlaying()){mediaPlayer.stop();}
+        viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
+        viewModel.createAudioReminder(title,binding.checkNotif.isChecked(),record_time);
+        file = null;
+        NavHostFragment.findNavController(AddAudioReminderFragment.this).navigate(R.id.action_addAudioReminderFragment_to_listFragment);
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,15 +189,27 @@ public class AddAudioReminderFragment extends Fragment {
         binding.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.currentPath= file.getAbsolutePath();
-                String title = binding.tituloEditText.getText().toString();
-                if(title.isEmpty()){
-                    title = file.getName();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                dialog.setTitle(getString(R.string.adv_titulo))
+                        .setMessage(getString(R.string.adv_content));
+                dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishJob();
+                    }
+                });
+                dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-360*1000)){
+                    dialog.show();
                 }
-                viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
-                viewModel.createAudioReminder(title,binding.checkNotif.isChecked(),record_time);
-                file = null;
-                NavHostFragment.findNavController(AddAudioReminderFragment.this).navigate(R.id.action_addAudioReminderFragment_to_listFragment);
+                else{
+                    finishJob();
+                }
             }
         });
 

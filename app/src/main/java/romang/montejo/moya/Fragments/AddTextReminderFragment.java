@@ -1,5 +1,7 @@
 package romang.montejo.moya.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -115,7 +117,6 @@ public class AddTextReminderFragment extends Fragment {
             }
         });
 
-
         // Configuro botones para mostrar los Pickers
         binding.checkNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -163,16 +164,37 @@ public class AddTextReminderFragment extends Fragment {
                 if (error) {
                     Toast.makeText(getActivity().getBaseContext(), getString(R.string.error_text_reminder), Toast.LENGTH_LONG).show();
                 } else {
-                    viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
-                    viewModel.createTextReminder(binding.tituloEditText.getText().toString(),
-                            binding.reminderEditText.getText().toString(),
-                            binding.checkNotif.isChecked());
-                    NavHostFragment.findNavController(AddTextReminderFragment.this).navigate(R.id.action_addTextReminderFragment_to_listFragment);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle(getString(R.string.adv_titulo))
+                            .setMessage(getString(R.string.adv_content));
+                    dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finishJob();
+                        }
+                    });
+                    dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-360*1000)){
+                        dialog.show();
+                    }
+                    else{
+                        finishJob();
+                    }
                 }
             }
         });
         return binding.getRoot();
     }
-
-
+    public void finishJob(){
+        viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
+        viewModel.createTextReminder(binding.tituloEditText.getText().toString(),
+                binding.reminderEditText.getText().toString(),
+                binding.checkNotif.isChecked());
+        NavHostFragment.findNavController(AddTextReminderFragment.this).navigate(R.id.action_addTextReminderFragment_to_listFragment);
+    }
 }

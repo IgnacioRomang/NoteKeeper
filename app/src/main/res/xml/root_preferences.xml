@@ -13,9 +13,5 @@
             android:defaultValue="false"
             android:key="darkmode"
             android:title="Unete al lado oscuro" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="check_box_preference_1"
-            android:title="Mostrar recordatorios caducados" />
     </PreferenceCategory>
 </PreferenceScreen>
