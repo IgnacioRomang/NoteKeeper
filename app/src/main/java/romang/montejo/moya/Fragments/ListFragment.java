@@ -19,8 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,9 +46,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import romang.montejo.moya.MainActivity;
 import romang.montejo.moya.Model.Reminder;
-import romang.montejo.moya.NotificationsManager;
+import romang.montejo.moya.Util.NotificationsManager;
 import romang.montejo.moya.Persistence.DbCallBacks;
 import romang.montejo.moya.Persistence.StorageManager;
 import romang.montejo.moya.R;
@@ -126,6 +123,7 @@ public class ListFragment extends Fragment {
                 }
             }
         });
+        viewModel.adapter.setContext(getContext());
 
         binding.recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());

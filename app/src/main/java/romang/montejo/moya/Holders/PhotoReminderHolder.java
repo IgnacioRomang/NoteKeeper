@@ -53,6 +53,9 @@ public class PhotoReminderHolder extends RecyclerView.ViewHolder {
         });
 
     }
+    public ImageView getRemove(){
+        return binding.removep;
+    }
     public MaterialCardView getCardView(){return binding.bigCard;}
 
     public void setTitle(String title) {

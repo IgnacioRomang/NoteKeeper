@@ -5,11 +5,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.room.OnConflictStrategy;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -84,7 +86,37 @@ public class StorageManager implements  DbCallBacks{
             }
         });
     }
-
+    public void removeReminder(Reminder reminder){
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                switch (getItemType(reminder)){
+                    case TEXT_TYPE:
+                        myDao.removeTextReminder((TextReminder) reminder);
+                        break;
+                    case IMG_TYPE:
+                        myDao.removePhotoReminder((PhotoReminder) reminder);
+                        removeFile(((PhotoReminder) reminder).getCurrentPhotoPath());
+                        break;
+                    case AUD_TYPE:
+                        myDao.removeAudioReminder((AudioReminder) reminder);
+                        removeFile(((AudioReminder) reminder).filePath);
+                        break;
+                }
+            }
+        });
+    }
+    private boolean removeFile(String path){
+        File file = new File(path);
+        boolean isDeleted =false;
+        if(file.exists()){
+            isDeleted = file.delete();
+            if(isDeleted){
+                Log.i("Dev: Nacho","Delete: "+path);
+            }
+        }
+        return isDeleted;
+    }
     public void getAllReminders(getRemainderCallback callback){
         AsyncTask.execute(new Runnable() {
             @Override

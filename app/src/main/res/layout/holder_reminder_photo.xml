@@ -26,7 +26,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:text="TextView"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/md_secondary_text_icons"
                 android:textSize="@dimen/title_text"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,11 +52,22 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
                 android:text="@string/patronTime"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@color/md_secondary_text_icons"
                 android:textSize="@dimen/fecha_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/photoview" />
+
+            <ImageView
+                android:id="@+id/removep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@color/md_secondary_text_icons"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_delete_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

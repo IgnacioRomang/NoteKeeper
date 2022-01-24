@@ -1,26 +1,14 @@
-package romang.montejo.moya;
+package romang.montejo.moya.Util;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadata;
-import android.media.MediaPlayer;
-import android.media.session.MediaController;
-import android.media.session.MediaSession;
-import android.media.session.PlaybackState;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.v4.media.session.MediaSessionCompat;
 
-import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
@@ -33,7 +21,6 @@ import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.Reminder;
 import romang.montejo.moya.Model.TextReminder;
 import romang.montejo.moya.Persistence.StorageManager;
-import romang.montejo.moya.Util.ParcelableUtil;
 
 public class NotificationsManager  {
     public static NotificationsManager instance;

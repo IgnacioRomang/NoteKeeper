@@ -78,6 +78,7 @@ public class ArchivedListFragment extends Fragment {
         reminders = new MutableLiveData<>();
         reminders.setValue(new ArrayList<>());
         adapter = new ReminderAdapter(reminders.getValue());
+        adapter.setContext(getContext());
         StorageManager.getInstance(null).getArchivedReminders(new DbCallBacks.getRemainderCallback() {
             @Override
             public void result(boolean exito, List<Reminder> recordatorios) {

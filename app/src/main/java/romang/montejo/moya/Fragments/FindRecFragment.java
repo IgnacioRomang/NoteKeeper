@@ -92,6 +92,7 @@ public class FindRecFragment extends Fragment {
         binding = FragmentFindRecBinding.inflate(inflater, container, false);
         reminders = new MutableLiveData<>();
         adapter = new ReminderAdapter(new ArrayList<>());
+        adapter.setContext(getContext());
         viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
         notFinded.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override

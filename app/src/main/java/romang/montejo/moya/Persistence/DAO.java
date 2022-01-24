@@ -1,6 +1,7 @@
 package romang.montejo.moya.Persistence;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -16,6 +17,10 @@ public interface DAO {
     @Insert Long insertTextReminder(TextReminder reminder);
     @Insert Long insertPhotoReminder(PhotoReminder reminder);
     @Insert Long insertAudioReminder(AudioReminder reminder);
+
+    @Delete void  removeTextReminder(TextReminder reminder);
+    @Delete void  removePhotoReminder(PhotoReminder reminder);
+    @Delete void  removeAudioReminder(AudioReminder reminder);
 
     @Query("SELECT * FROM TextReminder") List<TextReminder> getAllTextReminder();
     @Query("SELECT * FROM PhotoReminder") List<PhotoReminder> getAllPhotoReminder();

@@ -9,14 +9,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.os.Parcelable;
 
 import androidx.core.app.NotificationCompat;
 
 import romang.montejo.moya.Model.AudioReminder;
 import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.TextReminder;
-import romang.montejo.moya.NotificationsManager;
+import romang.montejo.moya.Util.NotificationsManager;
 import romang.montejo.moya.Persistence.StorageManager;
 import romang.montejo.moya.MediaPlayerActivity;
 import romang.montejo.moya.R;

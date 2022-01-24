@@ -12,7 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-import java.util.function.ToDoubleBiFunction;
 import java.util.stream.Collectors;
 
 import romang.montejo.moya.Model.AudioReminder;
@@ -22,6 +21,7 @@ import romang.montejo.moya.Model.TextReminder;
 import romang.montejo.moya.Holders.ReminderAdapter;
 import romang.montejo.moya.Persistence.DbCallBacks;
 import romang.montejo.moya.Persistence.StorageManager;
+import romang.montejo.moya.Util.NotificationsManager;
 
 public class MainViewModel extends ViewModel {
     public MutableLiveData<Calendar> calendarMutableLiveData;

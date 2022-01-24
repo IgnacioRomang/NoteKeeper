@@ -1,6 +1,7 @@
 package romang.montejo.moya.Holders;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -17,6 +18,10 @@ public class AudioReminderHolder extends RecyclerView.ViewHolder {
     private HolderReminderAudioBinding binding;
     private Long record_time;
     private String filePath;
+
+    public ImageView getRemove(){
+        return binding.removea;
+    }
 
     public Long getRecord_time() {
         return record_time;

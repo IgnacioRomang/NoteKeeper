@@ -1,5 +1,8 @@
 package romang.montejo.moya.Holders;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -14,11 +17,13 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import romang.montejo.moya.Model.AudioReminder;
 import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.Reminder;
 import romang.montejo.moya.Model.TextReminder;
+import romang.montejo.moya.Persistence.StorageManager;
 import romang.montejo.moya.R;
 
 public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -26,6 +31,16 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TEXT_TYPE = 1;
     private static final int IMG_TYPE = 2;
     private static final int AUD_TYPE = 3;
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    private Context context;
 
     public ReminderAdapter(List<Reminder> reminderList) {
         this.list = reminderList;
@@ -39,6 +54,20 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private List<Reminder> list;
+
+
+    public boolean removeReminder(int pos){
+        Reminder reminder = list.get(pos);
+        boolean isDeleted = false;
+        if(list.contains(reminder)){
+            list.remove(reminder);
+            this.notifyDataSetChanged();
+            StorageManager.getInstance(null).removeReminder(reminder);
+            //list = list.stream().filter((x)-> x.hashCode() != reminder.hashCode()).collect(Collectors.toList());
+            //lo tengo
+        }
+        return isDeleted;
+    }
 
     public List<Reminder> getList() {
         return list;
@@ -78,6 +107,15 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/YYYY - HH:mm");
         File file;
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle(context.getString(R.string.delete_title)).
+                setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setMessage(context.getString(R.string.delete_content));
         switch (getItemViewType(position)) {
             case TEXT_TYPE:
                 TextReminderHolder textReminderHolder = (TextReminderHolder) holder;
@@ -85,6 +123,18 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 textReminderHolder.setTitle(textReminder.getTitle());
                 textReminderHolder.setReminder(textReminder.getReminderText());
                 textReminderHolder.setTime(format.format(textReminder.getTime()));
+                alertDialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeReminder(textReminderHolder.getPosition());
+                    }
+                });
+                textReminderHolder.getRemove().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.show();
+                    }
+                });
                 break;
             case IMG_TYPE:
                 PhotoReminderHolder photoReminderHolder = (PhotoReminderHolder) holder;
@@ -103,6 +153,18 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     photoReminderHolder.setReminder(photo);
                 }
                 photoReminderHolder.setTime(format.format(photoReminder.getTime()));
+                alertDialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeReminder(photoReminderHolder.getPosition());
+                    }
+                });
+                photoReminderHolder.getRemove().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.show();
+                    }
+                });
                 break;
             case AUD_TYPE:
                 AudioReminderHolder audioReminderHolder = (AudioReminderHolder) holder;
@@ -119,9 +181,20 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     audioReminderHolder.getPlayButton().setOnClickListener(null);
                 }
                 audioReminderHolder.setRecord_time(audioReminder.getRecordTime());
+                alertDialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeReminder(audioReminderHolder.getPosition());
+                    }
+                });
+                audioReminderHolder.getRemove().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.show();
+                    }
+                });
                 break;
         }
-
     }
 
     public int getItemViewType(int position) {

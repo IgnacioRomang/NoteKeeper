@@ -51,6 +51,9 @@ public class TextReminderHolder extends RecyclerView.ViewHolder {
         });
 
     }
+    public ImageView getRemove(){
+        return binding.remove;
+    }
 
     public void setTitle(String title) {
         binding.titleTextCard.setText("Titulo: " + title);
