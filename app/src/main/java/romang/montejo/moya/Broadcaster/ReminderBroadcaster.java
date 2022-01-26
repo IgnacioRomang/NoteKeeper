@@ -17,7 +17,7 @@ import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.TextReminder;
 import romang.montejo.moya.Util.NotificationsManager;
 import romang.montejo.moya.Persistence.StorageManager;
-import romang.montejo.moya.MediaPlayerActivity;
+import romang.montejo.moya.Activitys.MediaPlayerActivity;
 import romang.montejo.moya.R;
 import romang.montejo.moya.Util.ParcelableUtil;
 

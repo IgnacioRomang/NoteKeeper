@@ -2,7 +2,10 @@
 ---
 
 1. [Agregar Recordatorio](web/addReminders.md)
-2. [Opciones](web/settings.md)
+2. [Buscar](web/find.md)
+3. [Opciones](web/settings.md)
+4. [Archivados](web/archived.md)
+5. [Permisos](web/permissions.md)
 
 # Notas "Tecnicas"
 ---

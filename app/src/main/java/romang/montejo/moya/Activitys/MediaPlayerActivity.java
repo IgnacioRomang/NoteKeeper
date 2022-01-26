@@ -1,4 +1,4 @@
-package romang.montejo.moya;
+package romang.montejo.moya.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.Date;
 
 import romang.montejo.moya.Model.AudioReminder;
+import romang.montejo.moya.R;
 import romang.montejo.moya.Util.MediaPlayerInHolderManager;
 import romang.montejo.moya.Util.ParcelableUtil;
 import romang.montejo.moya.databinding.ActivityPlayerBinding;

@@ -14,6 +14,7 @@ public interface DbCallBacks {
     interface getRemainderCallback {
         void result(final boolean exito, final List<Reminder> recordatorios);
     }
-    public void getAllReminders(getRemainderCallback callback);
+    public void getReminders(getRemainderCallback callback);
+    public void addReminder(Reminder reminder, saveResultCallback callback);
 
 }

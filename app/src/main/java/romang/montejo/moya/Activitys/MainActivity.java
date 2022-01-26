@@ -1,4 +1,4 @@
-package romang.montejo.moya;
+package romang.montejo.moya.Activitys;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +23,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.Model.Reminder;
+import romang.montejo.moya.R;
 import romang.montejo.moya.Util.NotificationsManager;
 import romang.montejo.moya.databinding.ActivityMainBinding;
 
@@ -63,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         start = false;
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        viewModel.liveData = new MutableLiveData<>();
+        //viewModel.liveData = new MutableLiveData<>();
 
-        List<Reminder> lista = new ArrayList<>();
+        //List<Reminder> lista = new ArrayList<>();
 
         /*
         AudioReminder test1 = new AudioReminder("hOLA",new Long(1321321),true);
@@ -76,10 +78,9 @@ public class MainActivity extends AppCompatActivity {
         lista.add(test2);
         */
 
-        // TODO: 18/1/2022 crear una clase que maneje las notificaciones que sea singleton
+        //viewModel.liveData.setValue(lista);
 
-        viewModel.liveData.setValue(lista);
-
+        /*
         viewModel.liveData.observe(MainActivity.this, new Observer<List<Reminder>>() {
             @Override
             public void onChanged(List<Reminder> reminders) {
@@ -87,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
                     binding.progressBar.setVisibility(View.GONE);
                 }
             }
-        });
+        });*/
+
         binding.progressBar.postDelayed(tenSecond, 10000);
-        viewModel.setContext(getApplicationContext());
         viewModel.getResult().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {

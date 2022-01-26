@@ -24,7 +24,7 @@ import com.google.android.material.timepicker.TimeFormat;
 
 import java.util.Calendar;
 
-import romang.montejo.moya.MainViewModel;
+import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.R;
 import romang.montejo.moya.databinding.FragmentAddPhotoReminderBinding;
 
@@ -103,7 +103,7 @@ public class AddPhotoReminderFragment extends Fragment {
 
         timePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(calendarLiveData.getValue().get(Calendar.HOUR))
+                .setHour(calendarLiveData.getValue().get(Calendar.HOUR_OF_DAY))
                 .setMinute(calendarLiveData.getValue().get(Calendar.MINUTE))
                 .build();
 

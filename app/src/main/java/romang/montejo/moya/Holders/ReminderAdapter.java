@@ -51,6 +51,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             list = new ArrayList<>();
         }
         list.add(reminder);
+        this.notifyDataSetChanged();
     }
 
     private List<Reminder> list;
@@ -63,8 +64,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             list.remove(reminder);
             this.notifyDataSetChanged();
             StorageManager.getInstance(null).removeReminder(reminder);
-            //list = list.stream().filter((x)-> x.hashCode() != reminder.hashCode()).collect(Collectors.toList());
-            //lo tengo
         }
         return isDeleted;
     }
@@ -75,10 +74,12 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setList(List<Reminder> list) {
         this.list = list;
+        this.notifyDataSetChanged();
     }
 
     public void addList(List<Reminder> reminderList) {
         list.addAll(reminderList);
+        this.notifyDataSetChanged();
     }
 
     @NonNull

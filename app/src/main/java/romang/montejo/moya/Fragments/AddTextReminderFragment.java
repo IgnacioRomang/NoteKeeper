@@ -5,15 +5,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.os.SystemClock;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -24,20 +21,12 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 import romang.montejo.moya.R;
-import romang.montejo.moya.MainViewModel;
+import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.databinding.FragmentAddTextReminderBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddTextReminderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddTextReminderFragment extends Fragment {
     private FragmentAddTextReminderBinding binding;
     private MaterialDatePicker datePicker;
@@ -94,7 +83,7 @@ public class AddTextReminderFragment extends Fragment {
 
         timePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(calendarLiveData.getValue().get(Calendar.HOUR))
+                .setHour(calendarLiveData.getValue().get(Calendar.HOUR_OF_DAY))
                 .setMinute(calendarLiveData.getValue().get(Calendar.MINUTE))
                 .build();
 
@@ -149,19 +138,15 @@ public class AddTextReminderFragment extends Fragment {
                 //verifico que los campos ttitulo y cuerpo no esten empty
                 if (binding.tituloEditText.getText().toString().isEmpty()) {
                     binding.editTextTextTituloName.setError(getString(R.string.no_titulo));
-                    error = true;
                 } else {
-                    error = false;
                     binding.editTextTextTituloName.setError(null);
                 }
                 if (binding.reminderEditText.getText().toString().isEmpty()) {
-                    error = true;
                     binding.editTextTextMultiLine.setError(getString(R.string.no_reminder));
                 } else {
-                    error = false;
                     binding.editTextTextMultiLine.setError(null);
                 }
-                if (error) {
+                if (binding.tituloEditText.getText().toString().isEmpty() || binding.reminderEditText.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity().getBaseContext(), getString(R.string.error_text_reminder), Toast.LENGTH_LONG).show();
                 } else {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
@@ -179,7 +164,7 @@ public class AddTextReminderFragment extends Fragment {
                             dialog.cancel();
                         }
                     });
-                    if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-360*1000)){
+                    if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-120*1000)){
                         dialog.show();
                     }
                     else{

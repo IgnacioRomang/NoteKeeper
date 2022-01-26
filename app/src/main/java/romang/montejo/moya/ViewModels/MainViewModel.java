@@ -1,4 +1,4 @@
-package romang.montejo.moya;
+package romang.montejo.moya.ViewModels;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,11 +21,12 @@ import romang.montejo.moya.Model.TextReminder;
 import romang.montejo.moya.Holders.ReminderAdapter;
 import romang.montejo.moya.Persistence.DbCallBacks;
 import romang.montejo.moya.Persistence.StorageManager;
+import romang.montejo.moya.R;
 import romang.montejo.moya.Util.NotificationsManager;
 
 public class MainViewModel extends ViewModel {
     public MutableLiveData<Calendar> calendarMutableLiveData;
-    public MutableLiveData<List<Reminder>> liveData;
+    //public MutableLiveData<List<Reminder>> liveData;
     public ReminderAdapter adapter;
     public String currentPath;
     private Context context;
@@ -57,6 +58,7 @@ public class MainViewModel extends ViewModel {
         this.photo = photo;
     }
 
+    /*
     public List<Reminder> getList() {
         if (liveData == null) {
             liveData = new MutableLiveData<>();
@@ -70,7 +72,7 @@ public class MainViewModel extends ViewModel {
             liveData = new MutableLiveData<>();
         }
         liveData.postValue(list);
-    }
+    }*/
 
     public MutableLiveData<Calendar> getCalendarMutableLiveData() {
         if (calendarMutableLiveData == null) {
@@ -84,7 +86,7 @@ public class MainViewModel extends ViewModel {
         this.calendarMutableLiveData = calendarMutableLiveData;
     }
 
-    public Calendar setDate(Calendar calen,Long selection) {
+    public Calendar setDate(Calendar calen, Long selection) {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.setTimeInMillis(selection);
         Date c = calendar.getTime();
@@ -103,7 +105,7 @@ public class MainViewModel extends ViewModel {
         return formatoF.format(time);
     }
 
-    public Calendar setTime(Calendar calendar,int hour, int min) {
+    public Calendar setTime(Calendar calendar, int hour, int min) {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, min);
         return calendar;
@@ -137,29 +139,33 @@ public class MainViewModel extends ViewModel {
     }
 
     public void saveReminder(Reminder reminder) {
-        List<Reminder> list;
-        if (liveData == null) {
+        if (adapter.getList() == null) {
+            adapter.setList(new ArrayList<>());
+        }
+        adapter.addReminder(reminder);
+        StorageManager.getInstance(null).addReminder(reminder, new DbCallBacks.saveResultCallback() {
+            @Override
+            public void result(boolean exito) {
+                result.postValue(exito);
+                Calendar calendar = Calendar.getInstance();
+                int min = calendar.get(Calendar.MINUTE);
+                calendar.set(Calendar.MINUTE, min - 2);
+                if (reminder.getNoti() && reminder.getTime() >= calendar.getTimeInMillis()) {
+                    NotificationsManager.lauchNotification(reminder);
+                }
+            }
+        });
+
+/*        if (liveData == null) {
             liveData = new MutableLiveData<>();
             list = new ArrayList<>();
         } else {
             list = liveData.getValue();
         }
-        if (reminder.getTime() >= (Calendar.getInstance().getTimeInMillis()-1000*120)) {
+        if (reminder.getTime() >= (Calendar.getInstance().getTimeInMillis() - 1000 *)) {
             list.add(reminder);
         }
-        StorageManager.getInstance(null).addReminder(reminder, new DbCallBacks.saveResultCallback() {
-            @Override
-            public void result(boolean exito) {
-                result.postValue(exito);
-                Calendar calendar= Calendar.getInstance();
-                int min = calendar.get(Calendar.MINUTE);
-                calendar.set(Calendar.MINUTE,min-2);
-                if (reminder.getNoti() && reminder.getTime()>= calendar.getTimeInMillis()) {
-                    NotificationsManager.lauchNotification(reminder);
-                }
-            }
-        });
-        liveData.setValue(list);
+        liveData.setValue(list);*/
     }
 
     public List<Reminder> filter(List<Reminder> list, List<Integer> chipChecketds) {

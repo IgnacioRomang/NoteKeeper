@@ -26,9 +26,10 @@ import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.Reminder;
 import romang.montejo.moya.Model.TextReminder;
 import romang.montejo.moya.R;
+import romang.montejo.moya.ViewModels.MainViewModel;
 
-public class StorageManager implements  DbCallBacks{
-    private static final String DB_NAME ="romang.montejo.moya.Persistence";
+public class StorageManager implements DbCallBacks {
+    private static final String DB_NAME = "romang.montejo.moya.Persistence";
     private DAO myDao;
     private static StorageManager instance;
     public static final int NOONE = 0;
@@ -51,24 +52,25 @@ public class StorageManager implements  DbCallBacks{
         return 0;
     }
 
-    private StorageManager(Context ctx){
-        MyRoomDB db = Room.databaseBuilder(ctx,MyRoomDB.class,DB_NAME).fallbackToDestructiveMigration().build();
+    private StorageManager(Context ctx) {
+        MyRoomDB db = Room.databaseBuilder(ctx, MyRoomDB.class, DB_NAME).fallbackToDestructiveMigration().build();
         myDao = db.Dao();
     }
-    public static StorageManager getInstance(Context ctx){
-        if(instance==null){
+
+    public static StorageManager getInstance(Context ctx) {
+        if (instance == null) {
             instance = new StorageManager(ctx);
         }
         return instance;
     }
 
-    public void addReminder(Reminder reminder,saveResultCallback callback){
+    public void addReminder(Reminder reminder, saveResultCallback callback) {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 long rowId = 0;
-                boolean result=false;
-                switch (getItemType(reminder)){
+                boolean result = false;
+                switch (getItemType(reminder)) {
                     case TEXT_TYPE:
                         rowId = myDao.insertTextReminder((TextReminder) reminder);
                         break;
@@ -79,18 +81,19 @@ public class StorageManager implements  DbCallBacks{
                         rowId = myDao.insertAudioReminder((AudioReminder) reminder);
                         break;
                 }
-                if(rowId != OnConflictStrategy.IGNORE || rowId != OnConflictStrategy.FAIL|| rowId != OnConflictStrategy.ABORT){
-                    result=true;
+                if (rowId != OnConflictStrategy.IGNORE || rowId != OnConflictStrategy.FAIL || rowId != OnConflictStrategy.ABORT) {
+                    result = true;
                 }
                 callback.result(result);
             }
         });
     }
-    public void removeReminder(Reminder reminder){
+
+    public void removeReminder(Reminder reminder) {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                switch (getItemType(reminder)){
+                switch (getItemType(reminder)) {
                     case TEXT_TYPE:
                         myDao.removeTextReminder((TextReminder) reminder);
                         break;
@@ -106,24 +109,26 @@ public class StorageManager implements  DbCallBacks{
             }
         });
     }
-    private boolean removeFile(String path){
+
+    private boolean removeFile(String path) {
         File file = new File(path);
-        boolean isDeleted =false;
-        if(file.exists()){
+        boolean isDeleted = false;
+        if (file.exists()) {
             isDeleted = file.delete();
-            if(isDeleted){
-                Log.i("Dev: Nacho","Delete: "+path);
+            if (isDeleted) {
+                Log.i("Dev: Nacho", "Delete: " + path);
             }
         }
         return isDeleted;
     }
-    public void getAllReminders(getRemainderCallback callback){
+
+    public void getReminders(getRemainderCallback callback) {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 List<Reminder> result = new ArrayList<>();
-                List<PhotoReminder>  l1 = myDao.getPhotoReminder();
-                List<TextReminder>  l2 = myDao.getTextReminder();
+                List<PhotoReminder> l1 = myDao.getPhotoReminder();
+                List<TextReminder> l2 = myDao.getTextReminder();
                 List<AudioReminder> l3 = myDao.getAudioReminder();
                 result.addAll(l1);
                 result.addAll(l2);
@@ -131,54 +136,53 @@ public class StorageManager implements  DbCallBacks{
                 result.sort(new Comparator<Reminder>() {
                     @Override
                     public int compare(Reminder o1, Reminder o2) {
-                        return Long.compare(o1.getTime(),o2.getTime());
+                        return Long.compare(o1.getTime(), o2.getTime());
                     }
                 });
                 boolean boolresult;
-                if(result.isEmpty()){
+                if (result.isEmpty()) {
                     boolresult = false;
-                }
-                else{
+                } else {
                     boolresult = true;
                 }
-                callback.result(boolresult,result);
+                callback.result(boolresult, result);
             }
         });
     }
 
-    public void getArchivedReminders(getRemainderCallback callback){
+    public void getArchivedReminders(getRemainderCallback callback) {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 List<Reminder> result = new ArrayList<>();
-                List<PhotoReminder>  l1 = myDao.getAllPhotoReminder();
-                List<TextReminder>  l2 = myDao.getAllTextReminder();
+                List<PhotoReminder> l1 = myDao.getAllPhotoReminder();
+                List<TextReminder> l2 = myDao.getAllTextReminder();
                 List<AudioReminder> l3 = myDao.getAllAudioReminder();
                 result.addAll(l1);
                 result.addAll(l2);
                 result.addAll(l3);
                 boolean boolresult;
-                if(result.isEmpty()){
+                if (result.isEmpty()) {
                     boolresult = false;
-                }
-                else{
+                } else {
                     boolresult = true;
                 }
                 Date today = new Date();
-                today.setMinutes(today.getMinutes()-5);// 5 min antes
-                callback.result(boolresult,result.stream().filter((x)-> x.getTime()<=today.getTime()).collect(Collectors.toList()));
+                //
+                today.setMinutes(today.getMinutes() -1);// 5 min antes
+                callback.result(boolresult, result.stream().filter((x) -> x.getTime() <= today.getTime()).collect(Collectors.toList()));
             }
         });
     }
 
 
-    public void getFindRemineders(String find,getRemainderCallback callback){
+    public void getFindRemineders(String find, getRemainderCallback callback) {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 List<Reminder> result = new ArrayList<>();
-                List<PhotoReminder>  l1 = myDao.findPhotoReminder(find);
-                List<TextReminder>  l2 = myDao.findTextReminder(find);
+                List<PhotoReminder> l1 = myDao.findPhotoReminder(find);
+                List<TextReminder> l2 = myDao.findTextReminder(find);
                 List<AudioReminder> l3 = myDao.findAudioReminder(find);
                 result.addAll(l1);
                 result.addAll(l2);
@@ -186,17 +190,16 @@ public class StorageManager implements  DbCallBacks{
                 result.sort(new Comparator<Reminder>() {
                     @Override
                     public int compare(Reminder o1, Reminder o2) {
-                        return Long.compare(o1.getTime(),o2.getTime());
+                        return Long.compare(o1.getTime(), o2.getTime());
                     }
                 });
                 boolean boolresult;
-                if(result.isEmpty()){
+                if (result.isEmpty()) {
                     boolresult = false;
-                }
-                else{
+                } else {
                     boolresult = true;
                 }
-                callback.result(boolresult,result);
+                callback.result(boolresult, result);
             }
         });
     }

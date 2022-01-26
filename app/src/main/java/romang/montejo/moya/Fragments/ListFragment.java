@@ -43,6 +43,7 @@ import com.leinardi.android.speeddial.SpeedDialView;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +53,7 @@ import romang.montejo.moya.Persistence.DbCallBacks;
 import romang.montejo.moya.Persistence.StorageManager;
 import romang.montejo.moya.R;
 import romang.montejo.moya.Holders.ReminderAdapter;
-import romang.montejo.moya.MainViewModel;
+import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.databinding.FragmentListBinding;
 
 /**
@@ -108,27 +109,25 @@ public class ListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentListBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
         viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
-        viewModel.adapter = new ReminderAdapter(viewModel.getList());
-        StorageManager.getInstance(getActivity().getBaseContext()).getAllReminders(new DbCallBacks.getRemainderCallback() {
+        viewModel.adapter = new ReminderAdapter(new ArrayList<>());
+        viewModel.adapter.setContext(getContext());
+        binding.recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setAdapter(viewModel.adapter);
+
+        StorageManager.getInstance(getActivity().getBaseContext()).getReminders(new DbCallBacks.getRemainderCallback() {
             @Override
             public void result(boolean exito, List<Reminder> recordatorios) {
-                viewModel.setList(recordatorios);
                 if (viewModel.adapter.getItemCount() == 0) {
                     viewModel.adapter.addList(recordatorios);
                     NotificationsManager.startingLauchNotifications(recordatorios);
                 }
             }
         });
-        viewModel.adapter.setContext(getContext());
-
-        binding.recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        binding.recyclerView.setLayoutManager(layoutManager);
-        binding.recyclerView.setAdapter(viewModel.adapter);
 
         binding.floatingActionButton.setMainFabClosedDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_24));
         binding.floatingActionButton.addActionItem(new SpeedDialActionItem.Builder(R.id.photo_button, R.drawable.ic_baseline_add_a_photo_24)

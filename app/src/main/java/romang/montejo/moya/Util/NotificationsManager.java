@@ -50,7 +50,8 @@ public class NotificationsManager  {
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
-                    List<Reminder> notifReminders = reminderList.stream().filter((a) -> a.getNoti()).collect(Collectors.toList());
+                    Calendar today = Calendar.getInstance();
+                    List<Reminder> notifReminders = reminderList.stream().filter((x) -> x.getNoti() && x.getTime()>= today.getTimeInMillis()).collect(Collectors.toList());
                     for (Reminder reminder : notifReminders) {
                         lauchNotification(reminder);
                     }
