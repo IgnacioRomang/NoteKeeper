@@ -26,7 +26,7 @@ import romang.montejo.moya.Util.NotificationsManager;
 
 public class MainViewModel extends ViewModel {
     public MutableLiveData<Calendar> calendarMutableLiveData;
-    //public MutableLiveData<List<Reminder>> liveData;
+    public MutableLiveData<Boolean> resultSave;
     public ReminderAdapter adapter;
     public String currentPath;
     private Context context;
@@ -57,22 +57,6 @@ public class MainViewModel extends ViewModel {
     public void setPhoto(Bitmap photo) {
         this.photo = photo;
     }
-
-    /*
-    public List<Reminder> getList() {
-        if (liveData == null) {
-            liveData = new MutableLiveData<>();
-            liveData.setValue(new ArrayList<>());
-        }
-        return liveData.getValue();
-    }
-
-    public void setList(List<Reminder> list) {
-        if (liveData == null) {
-            liveData = new MutableLiveData<>();
-        }
-        liveData.postValue(list);
-    }*/
 
     public MutableLiveData<Calendar> getCalendarMutableLiveData() {
         if (calendarMutableLiveData == null) {
@@ -146,7 +130,7 @@ public class MainViewModel extends ViewModel {
         StorageManager.getInstance(null).addReminder(reminder, new DbCallBacks.saveResultCallback() {
             @Override
             public void result(boolean exito) {
-                result.postValue(exito);
+                resultSave.postValue(exito);
                 Calendar calendar = Calendar.getInstance();
                 int min = calendar.get(Calendar.MINUTE);
                 calendar.set(Calendar.MINUTE, min - 2);
@@ -155,17 +139,6 @@ public class MainViewModel extends ViewModel {
                 }
             }
         });
-
-/*        if (liveData == null) {
-            liveData = new MutableLiveData<>();
-            list = new ArrayList<>();
-        } else {
-            list = liveData.getValue();
-        }
-        if (reminder.getTime() >= (Calendar.getInstance().getTimeInMillis() - 1000 *)) {
-            list.add(reminder);
-        }
-        liveData.setValue(list);*/
     }
 
     public List<Reminder> filter(List<Reminder> list, List<Integer> chipChecketds) {
