@@ -34,12 +34,12 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private NavController navController;
     private MainViewModel viewModel;
-    private Boolean start;
+    private MutableLiveData<Boolean> start;
 
     private Runnable tenSecond = new Runnable() {
         public void run() {
             binding.progressBar.setVisibility(View.GONE);
-            start=true;
+            //start.postValue(true);
         }
     };
     @Override
@@ -62,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationsManager.getInstance(getBaseContext());
 
-        start = false;
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        viewModel.result = new MutableLiveData<>();
+        viewModel.resultSave = new MutableLiveData<>();
 
         //viewModel.liveData = new MutableLiveData<>();
 
@@ -77,24 +78,18 @@ public class MainActivity extends AppCompatActivity {
         lista.add(test1);
         lista.add(test2);
         */
-
-        //viewModel.liveData.setValue(lista);
-
-        /*
-        viewModel.liveData.observe(MainActivity.this, new Observer<List<Reminder>>() {
-            @Override
-            public void onChanged(List<Reminder> reminders) {
-                if (!reminders.isEmpty()) {
-                    binding.progressBar.setVisibility(View.GONE);
-                }
-            }
-        });*/
-
-        binding.progressBar.postDelayed(tenSecond, 10000);
-        viewModel.getResult().observe(this, new Observer<Boolean>() {
+        viewModel.getResult().observe(MainActivity.this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if (aBoolean && start) {
+                binding.progressBar.setVisibility(View.GONE);
+            }
+        });
+
+        binding.progressBar.postDelayed(tenSecond, 10000);
+        viewModel.resultSave.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
                     Toast.makeText(getBaseContext(), getString(R.string.save_ok), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getBaseContext(), getString(R.string.save_sad), Toast.LENGTH_SHORT).show();

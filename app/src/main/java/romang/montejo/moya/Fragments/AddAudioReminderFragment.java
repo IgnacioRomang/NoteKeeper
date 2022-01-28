@@ -199,7 +199,7 @@ public class AddAudioReminderFragment extends Fragment {
                         dialog.cancel();
                     }
                 });
-                if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-360*1000)){
+                if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-360*1000)&& binding.checkNotif.isChecked()){
                     dialog.show();
                 }
                 else{

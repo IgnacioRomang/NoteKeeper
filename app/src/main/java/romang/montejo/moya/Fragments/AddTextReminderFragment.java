@@ -164,7 +164,7 @@ public class AddTextReminderFragment extends Fragment {
                             dialog.cancel();
                         }
                     });
-                    if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-120*1000)){
+                    if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-120*1000) && binding.checkNotif.isChecked()){
                         dialog.show();
                     }
                     else{

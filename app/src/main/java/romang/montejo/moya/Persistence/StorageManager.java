@@ -127,12 +127,12 @@ public class StorageManager implements DbCallBacks {
             @Override
             public void run() {
                 List<Reminder> result = new ArrayList<>();
-                List<PhotoReminder> l1 = myDao.getPhotoReminder();
-                List<TextReminder> l2 = myDao.getTextReminder();
-                List<AudioReminder> l3 = myDao.getAudioReminder();
-                result.addAll(l1);
-                result.addAll(l2);
-                result.addAll(l3);
+                result.addAll(myDao.getNnAudioReminder());
+                result.addAll(myDao.getNnPhotoReminder());
+                result.addAll(myDao.getNnTextReminder());
+                result.addAll(myDao.getPhotoReminder());
+                result.addAll(myDao.getTextReminder());
+                result.addAll(myDao.getAudioReminder());
                 result.sort(new Comparator<Reminder>() {
                     @Override
                     public int compare(Reminder o1, Reminder o2) {
@@ -155,12 +155,9 @@ public class StorageManager implements DbCallBacks {
             @Override
             public void run() {
                 List<Reminder> result = new ArrayList<>();
-                List<PhotoReminder> l1 = myDao.getAllPhotoReminder();
-                List<TextReminder> l2 = myDao.getAllTextReminder();
-                List<AudioReminder> l3 = myDao.getAllAudioReminder();
-                result.addAll(l1);
-                result.addAll(l2);
-                result.addAll(l3);
+                result.addAll(myDao.getAllPhotoReminder());
+                result.addAll(myDao.getAllTextReminder());
+                result.addAll(myDao.getAllAudioReminder());
                 boolean boolresult;
                 if (result.isEmpty()) {
                     boolresult = false;
@@ -181,12 +178,9 @@ public class StorageManager implements DbCallBacks {
             @Override
             public void run() {
                 List<Reminder> result = new ArrayList<>();
-                List<PhotoReminder> l1 = myDao.findPhotoReminder(find);
-                List<TextReminder> l2 = myDao.findTextReminder(find);
-                List<AudioReminder> l3 = myDao.findAudioReminder(find);
-                result.addAll(l1);
-                result.addAll(l2);
-                result.addAll(l3);
+                result.addAll(myDao.findPhotoReminder(find));
+                result.addAll(myDao.findTextReminder(find));
+                result.addAll(myDao.findAudioReminder(find));
                 result.sort(new Comparator<Reminder>() {
                     @Override
                     public int compare(Reminder o1, Reminder o2) {

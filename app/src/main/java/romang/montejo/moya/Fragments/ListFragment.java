@@ -124,6 +124,7 @@ public class ListFragment extends Fragment {
             public void result(boolean exito, List<Reminder> recordatorios) {
                 if (viewModel.adapter.getItemCount() == 0) {
                     viewModel.adapter.addList(recordatorios);
+                    viewModel.getResult().postValue(exito);
                     NotificationsManager.startingLauchNotifications(recordatorios);
                 }
             }

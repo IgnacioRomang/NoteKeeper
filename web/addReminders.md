@@ -1,17 +1,12 @@
 # Tutorial
 
-
 ---
 
 ## Agregar Recordatorios
 
-
-
 ### Recordatorio en General
 
-1. Primero debe utilizar el botón flotante para desplegar las diferentes opciones
-
-de recordatorios.
+1. Primero debe utilizar el botón flotante para desplegar las diferentes opciones de recordatorios.
 
 ![](Image/addReminder/addTextReminder_1.png)
 
@@ -41,35 +36,24 @@ de recordatorios.
 
 ### Fotos
 
+1. Este es el apartado más simple, debes tomar una foto definir un titulo y su hora en caso de ser necesario.
 
-
-
+![](Image/addReminder/addReminder_photo_1.png)
+![](Image/addReminder/addReminder_photo_2.png)
+![](Image/addReminder/addReminder_photo_3.png)
 
 ---
 
 ### Audios
 
-1. Al seleccionar la opción de los audios debemos tener en cuenta que debemos tener los permisos adecuados para ello!
-
-El botón de grabar funciona muy similar a otras aplicaciones que brindan esta funcionalidad, se mantiene pulsado para grabar, se desliza para descartar.
-
-
-
-Si termino de grabar y aun así no estas conforme con el audio puede sobreescribir al presionar denuedo el botón de grabar.
+1. Al seleccionar la opción de los audios debemos tener en cuenta que debemos tener los permisos adecuados para ello.El botón de grabar funciona muy similar a otras aplicaciones que brindan esta funcionalidad, se mantiene pulsado para grabar, se desliza para descartar. Si termino de grabar y aun así no estas conforme con el audio puede sobreescribir al presionar denuedo el botón de grabar.
 
 ![](Image/addReminder/addReminder_audio_1.png)
 
-
-
-2. Una vez grabado puede reproducirlo y ver un espectrograma muy rudimentario. Y enviar
-   para recordar el audio.
+2. Una vez grabado puede reproducirlo y ver un espectrograma muy rudimentario. Y enviar para recordar el audio.
 
 ![](Image/addReminder/addReminder_audio_2.png)
 
-
-
 3. Una vez enviado, podra visualizar el audio y reproducirlo. Ten en cuenta que si quieres reproducir otro audio este se pausara y volverá al minuto 00:00.
-
-
 
 ![](Image/addReminder/addReminder_audio_3.png)
