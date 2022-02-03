@@ -135,7 +135,7 @@ public class MainViewModel extends ViewModel {
                 int min = calendar.get(Calendar.MINUTE);
                 calendar.set(Calendar.MINUTE, min - 2);
                 if (reminder.getNoti() && reminder.getTime() >= calendar.getTimeInMillis()) {
-                    NotificationsManager.lauchNotification(reminder);
+                    NotificationsManager.getInstance().lauchNotification(reminder);
                 }
             }
         });

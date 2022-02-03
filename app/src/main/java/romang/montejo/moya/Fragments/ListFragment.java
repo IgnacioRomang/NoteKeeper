@@ -125,7 +125,6 @@ public class ListFragment extends Fragment {
                 if (viewModel.adapter.getItemCount() == 0) {
                     viewModel.adapter.addList(recordatorios);
                     viewModel.getResult().postValue(exito);
-                    NotificationsManager.startingLauchNotifications(recordatorios);
                 }
             }
         });

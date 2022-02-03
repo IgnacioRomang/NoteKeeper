@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
@@ -22,36 +23,29 @@ import romang.montejo.moya.Model.Reminder;
 import romang.montejo.moya.Model.TextReminder;
 import romang.montejo.moya.Persistence.StorageManager;
 
-public class NotificationsManager  {
+public class NotificationsManager {
     public static NotificationsManager instance;
     public static Context context;
     public AlarmManager alarmManager;
 
     private int importance = NotificationManager.IMPORTANCE_DEFAULT;
     static private String CHANNEL_NAME = "romang.montejo.moya";
-    static public String CHANNEL_ID;
-
-    public static final String PLAY_BUTTON = "romang.montejo.moya.PLAY";
-    public static final String PAUSE_BUTTON = "romang.montejo.moya.PAUSE";
+    static public String CHANNEL_ID = "2D2C9FY6ASK2A7PM4EL85E5W";
 
 
-    public NotificationsManager(Context ctx) {
-        context = ctx;
-        CHANNEL_ID = String.valueOf(ctx.hashCode());
+    public NotificationsManager() {
         startingChannel();
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
-    public NotificationsManager() {
 
-    }
-    static public void startingLauchNotifications(List<Reminder> reminderList) {
+     public void startingLauchNotifications(List<Reminder> reminderList) {
         if (PreferenceManager.getDefaultSharedPreferences(instance.context).getBoolean("notification", true)) {
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
                     Calendar today = Calendar.getInstance();
-                    List<Reminder> notifReminders = reminderList.stream().filter((x) -> x.getNoti() && x.getTime()>= today.getTimeInMillis()).collect(Collectors.toList());
+                    List<Reminder> notifReminders = reminderList.stream().filter((x) -> x.getNoti() && x.getTime() >= today.getTimeInMillis()).collect(Collectors.toList());
                     for (Reminder reminder : notifReminders) {
                         lauchNotification(reminder);
                     }
@@ -60,9 +54,9 @@ public class NotificationsManager  {
         }
     }
 
-    static public NotificationsManager getInstance(Context ctx) {
+    static public NotificationsManager getInstance() {
         if (instance == null) {
-            instance = new NotificationsManager(ctx);
+            instance = new NotificationsManager();
         }
         return instance;
     }
@@ -75,19 +69,17 @@ public class NotificationsManager  {
         }
     }
 
-    public static void lauchNotification(Reminder reminder) {
-        if (PreferenceManager.getDefaultSharedPreferences(instance.context).getBoolean("notification", true)) {
+    public void lauchNotification(Reminder reminder) {
+        if (PreferenceManager.getDefaultSharedPreferences(instance.context).getBoolean("notification", true) || reminder.getNoti() == true) {
+
             Intent intent = new Intent(instance.context, ReminderBroadcaster.class);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                instance.context.startForegroundService(intent);
-            } else {
-                instance.context.startService(intent);
-            }
-            //put extras
             int itemType = StorageManager.getItemType(reminder);
-            intent.setAction(String.valueOf(itemType));
-            switch (Integer.parseInt(intent.getAction())) {
+            intent.setAction(context.getPackageName() + ".Reminder");
+            intent.putExtra("type", itemType);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            switch (itemType) {
                 case StorageManager.TEXT_TYPE:
                     intent.putExtra("reminder", ParcelableUtil.marshall(((TextReminder) reminder)));
                     break;
@@ -98,17 +90,24 @@ public class NotificationsManager  {
                     intent.putExtra("reminder", ParcelableUtil.marshall(((PhotoReminder) reminder)));
                     break;
             }
+
             PendingIntent intped = PendingIntent.getBroadcast(instance.context, reminder.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
             //
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(reminder.getTime());
             calendar.set(Calendar.SECOND, 0);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 instance.alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intped);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                instance.alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intped);
-            } else {
-                instance.alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intped);
+            }
+            else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    instance.alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intped);
+                }
+                else {
+                    instance.alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intped);
+                }
             }
         }
     }

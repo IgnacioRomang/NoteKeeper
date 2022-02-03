@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        NotificationsManager.getInstance(getBaseContext());
+        NotificationsManager.context=getApplicationContext();
+        //NotificationsManager notificationsManager = NotificationsManager.getInstance(getBaseContext());
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         viewModel.result = new MutableLiveData<>();
@@ -68,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
         //viewModel.liveData = new MutableLiveData<>();
 
-        //List<Reminder> lista = new ArrayList<>();
 
         /*
+        List<Reminder> lista = new ArrayList<>();
         AudioReminder test1 = new AudioReminder("hOLA",new Long(1321321),true);
         test1.setFilePath("SADADAS");
         PhotoReminder test2 = new PhotoReminder("Esto no tiene foto",new Long(1321321),true);
