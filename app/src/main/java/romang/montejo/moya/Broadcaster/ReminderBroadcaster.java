@@ -29,7 +29,6 @@ public class ReminderBroadcaster extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.w("Nacho develop","Entro al BroadcastReceiver");
         Bundle extras = intent.getExtras();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
