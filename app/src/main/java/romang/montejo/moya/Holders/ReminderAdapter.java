@@ -79,7 +79,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void addList(List<Reminder> reminderList) {
         list.addAll(reminderList);
-        this.notifyDataSetChanged();
     }
 
     @NonNull

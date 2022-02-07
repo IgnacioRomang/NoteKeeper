@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 binding.progressBar.setVisibility(View.GONE);
+                viewModel.adapter.notifyDataSetChanged();
             }
         });
 
