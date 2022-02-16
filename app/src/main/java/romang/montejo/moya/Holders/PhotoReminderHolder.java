@@ -24,7 +24,7 @@ public class PhotoReminderHolder extends RecyclerView.ViewHolder {
     public PhotoReminderHolder(@NonNull View itemView) {
         super(itemView);
         binding = HolderReminderPhotoBinding.bind(itemView);
-        defaultPhoto=false;
+        defaultPhoto = false;
         binding.bigCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,8 +43,8 @@ public class PhotoReminderHolder extends RecyclerView.ViewHolder {
                     }
                 });
                 imageView = dialog.findViewById(R.id.photoview);
-                imageView.setImageBitmap(((BitmapDrawable)binding.photoview.getDrawable()).getBitmap());
-                if(defaultPhoto){
+                imageView.setImageBitmap(((BitmapDrawable) binding.photoview.getDrawable()).getBitmap());
+                if (defaultPhoto) {
                     MaterialCardView bigCard = dialog.findViewById(R.id.inspCardView);
                     bigCard.setCardBackgroundColor(v.getContext().getColor(R.color.md_red_200));
                 }
@@ -53,10 +53,14 @@ public class PhotoReminderHolder extends RecyclerView.ViewHolder {
         });
 
     }
-    public ImageView getRemove(){
+
+    public ImageView getRemove() {
         return binding.removep;
     }
-    public MaterialCardView getCardView(){return binding.bigCard;}
+
+    public MaterialCardView getCardView() {
+        return binding.bigCard;
+    }
 
     public void setTitle(String title) {
         binding.titleCardPhoto.setText("Titulo: " + title);

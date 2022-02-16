@@ -8,17 +8,6 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "AudioReminder")
 public class AudioReminder extends Reminder implements Parcelable {
-    @PrimaryKey(autoGenerate = true)
-    private Integer id;
-    public String filePath;
-    public long recordTime;
-
-    protected AudioReminder(Parcel in) {
-        this(in.readString(),in.readLong(),in.readBoolean());
-        filePath = in.readString();
-        recordTime = in.readLong();
-    }
-
     public static final Creator<AudioReminder> CREATOR = new Creator<AudioReminder>() {
         @Override
         public AudioReminder createFromParcel(Parcel in) {
@@ -30,22 +19,35 @@ public class AudioReminder extends Reminder implements Parcelable {
             return new AudioReminder[size];
         }
     };
+    public String filePath;
+    public long recordTime;
+    @PrimaryKey(autoGenerate = true)
+    private Integer id;
 
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public long getRecordTime() {
-        return recordTime;
-    }
-    public void setRecordTime(long recordTime) {
-        this.recordTime = recordTime;
+    protected AudioReminder(Parcel in) {
+        this(in.readString(), in.readLong(), in.readBoolean());
+        filePath = in.readString();
+        recordTime = in.readLong();
     }
 
     public AudioReminder(String title, Long time, Boolean noti) {
         super(title, time, noti);
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public long getRecordTime() {
+        return recordTime;
+    }
+
+    public void setRecordTime(long recordTime) {
+        this.recordTime = recordTime;
     }
 
     public String getFilePath() {

@@ -1,6 +1,10 @@
 package romang.montejo.moya.Fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
@@ -9,34 +13,27 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import romang.montejo.moya.Holders.ReminderAdapter;
-import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.Model.Reminder;
 import romang.montejo.moya.Persistence.DbCallBacks;
 import romang.montejo.moya.Persistence.StorageManager;
 import romang.montejo.moya.R;
+import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.databinding.FragmentFindRecBinding;
 
 
 public class FindRecFragment extends Fragment {
 
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     private FragmentFindRecBinding binding;
     private MutableLiveData<List<Reminder>> reminders;
     private MainViewModel viewModel;
     private ReminderAdapter adapter;
     private MutableLiveData<Boolean> notFinded;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private String mParam1;
     private String mParam2;
 
@@ -74,7 +71,7 @@ public class FindRecFragment extends Fragment {
         notFinded.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if(!aBoolean){
+                if (!aBoolean) {
                     binding.searchprogressbar.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), "No se encontro nada con ese nombre", Toast.LENGTH_LONG).show();
                 }
@@ -93,9 +90,8 @@ public class FindRecFragment extends Fragment {
                         @Override
                         public void result(boolean exito, List<Reminder> remindersRoom) {
                             if (exito) {
-                                reminders.postValue(viewModel.filter(remindersRoom,binding.chipGroup.getCheckedChipIds()));
-                            }
-                            else{
+                                reminders.postValue(viewModel.filter(remindersRoom, binding.chipGroup.getCheckedChipIds()));
+                            } else {
                                 notFinded.postValue(exito);
                             }
                         }

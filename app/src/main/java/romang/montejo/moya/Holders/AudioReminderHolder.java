@@ -19,33 +19,6 @@ public class AudioReminderHolder extends RecyclerView.ViewHolder {
     private Long record_time;
     private String filePath;
 
-    public ImageView getRemove(){
-        return binding.removea;
-    }
-
-    public Long getRecord_time() {
-        return record_time;
-    }
-    public void setRecord_time(Long record_time) {
-        this.record_time = record_time;
-    }
-    public String getFilePath() {
-        return filePath;
-    }
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-    public void setTitle(String title){
-        binding.titleTextCard.setText(title);
-    }
-    public void setTime(String time){
-        binding.timeTextCard.setText(time);
-    }
-    public MaterialButton getPlayButton(){return binding.playHolderbutton;}
-    public SeekBar getSeekBar(){return binding.seekBar;}
-    public TextView getTimerText(){return binding.timer;}
-    public MaterialCardView getCardView(){return binding.PlayerCardView;}
-
     public AudioReminderHolder(@NonNull View itemView) {
         super(itemView);
         binding = HolderReminderAudioBinding.bind(itemView);
@@ -53,9 +26,53 @@ public class AudioReminderHolder extends RecyclerView.ViewHolder {
         binding.playHolderbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaPlayerInHolderManager.getInstance(v.getContext(),AudioReminderHolder.this);
+                MediaPlayerInHolderManager.getInstance(v.getContext(), AudioReminderHolder.this);
                 binding.playHolderbutton.callOnClick();
             }
         });
+    }
+
+    public ImageView getRemove() {
+        return binding.removea;
+    }
+
+    public Long getRecord_time() {
+        return record_time;
+    }
+
+    public void setRecord_time(Long record_time) {
+        this.record_time = record_time;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public void setTitle(String title) {
+        binding.titleTextCard.setText(title);
+    }
+
+    public void setTime(String time) {
+        binding.timeTextCard.setText(time);
+    }
+
+    public MaterialButton getPlayButton() {
+        return binding.playHolderbutton;
+    }
+
+    public SeekBar getSeekBar() {
+        return binding.seekBar;
+    }
+
+    public TextView getTimerText() {
+        return binding.timer;
+    }
+
+    public MaterialCardView getCardView() {
+        return binding.PlayerCardView;
     }
 }

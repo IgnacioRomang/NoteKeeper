@@ -3,18 +3,17 @@ package romang.montejo.moya.Fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -28,24 +27,21 @@ import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.databinding.FragmentAddTextReminderBinding;
 
 public class AddTextReminderFragment extends Fragment {
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    private static Boolean error;
     private FragmentAddTextReminderBinding binding;
     private MaterialDatePicker datePicker;
     private MaterialTimePicker timePicker;
     private MutableLiveData<Calendar> calendarLiveData;
-    private static Boolean error;
-
     private MainViewModel viewModel;
-
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private String mParam1;
     private String mParam2;
 
     public AddTextReminderFragment() {
         // Required empty public constructor
     }
+
     public static AddTextReminderFragment newInstance(String param1, String param2) {
         AddTextReminderFragment fragment = new AddTextReminderFragment();
         Bundle args = new Bundle();
@@ -90,13 +86,13 @@ public class AddTextReminderFragment extends Fragment {
         timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.getCalendarMutableLiveData().postValue(viewModel.setTime(calendarLiveData.getValue(),timePicker.getHour(),timePicker.getMinute()));
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setTime(calendarLiveData.getValue(), timePicker.getHour(), timePicker.getMinute()));
             }
         });
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long selection) {
-                viewModel.getCalendarMutableLiveData().postValue(viewModel.setDate(calendarLiveData.getValue(),selection));
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setDate(calendarLiveData.getValue(), selection));
             }
         });
         viewModel.getCalendarMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Calendar>() {
@@ -164,10 +160,9 @@ public class AddTextReminderFragment extends Fragment {
                             dialog.cancel();
                         }
                     });
-                    if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-120*1000) && binding.checkNotif.isChecked()){
+                    if (calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis() - 120 * 1000) && binding.checkNotif.isChecked()) {
                         dialog.show();
-                    }
-                    else{
+                    } else {
                         finishJob();
                     }
                 }
@@ -175,7 +170,8 @@ public class AddTextReminderFragment extends Fragment {
         });
         return binding.getRoot();
     }
-    public void finishJob(){
+
+    public void finishJob() {
         viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
         viewModel.createTextReminder(binding.tituloEditText.getText().toString(),
                 binding.reminderEditText.getText().toString(),

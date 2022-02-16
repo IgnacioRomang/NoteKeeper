@@ -17,7 +17,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import romang.montejo.moya.Model.AudioReminder;
 import romang.montejo.moya.Model.PhotoReminder;
@@ -31,6 +30,12 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TEXT_TYPE = 1;
     private static final int IMG_TYPE = 2;
     private static final int AUD_TYPE = 3;
+    private Context context;
+    private List<Reminder> list;
+
+    public ReminderAdapter(List<Reminder> reminderList) {
+        this.list = reminderList;
+    }
 
     public Context getContext() {
         return context;
@@ -38,12 +43,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setContext(Context context) {
         this.context = context;
-    }
-
-    private Context context;
-
-    public ReminderAdapter(List<Reminder> reminderList) {
-        this.list = reminderList;
     }
 
     public void addReminder(Reminder reminder) {
@@ -54,13 +53,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.notifyDataSetChanged();
     }
 
-    private List<Reminder> list;
-
-
-    public boolean removeReminder(int pos){
+    public boolean removeReminder(int pos) {
         Reminder reminder = list.get(pos);
         boolean isDeleted = false;
-        if(list.contains(reminder)){
+        if (list.contains(reminder)) {
             list.remove(reminder);
             this.notifyDataSetChanged();
             StorageManager.getInstance(null).removeReminder(reminder);
@@ -144,12 +140,11 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 file = new File(photoReminder.getCurrentPhotoPath());
                 Bitmap photo = null;
                 if (!file.exists()) {
-                    photoReminderHolder.defaultPhoto=true;
+                    photoReminderHolder.defaultPhoto = true;
                     photoReminderHolder.getCardView().setCardBackgroundColor(ContextCompat.getColor(photoReminderHolder.getCardView().getContext(), R.color.md_red_200));
-                }
-                else{
+                } else {
                     photo = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    photoReminderHolder.defaultPhoto=false;
+                    photoReminderHolder.defaultPhoto = false;
                     photoReminderHolder.setReminder(photo);
                 }
                 photoReminderHolder.setTime(format.format(photoReminder.getTime()));
@@ -173,11 +168,11 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 audioReminderHolder.setTime(format.format(audioReminder.getTime()));
                 audioReminderHolder.setFilePath(audioReminder.getFilePath());
                 file = new File(audioReminder.getFilePath());
-                if(!file.exists()) {
+                if (!file.exists()) {
                     audioReminderHolder.getPlayButton().setIconResource(R.drawable.ic_baseline_dangerous_24);
                     audioReminderHolder.getCardView().setCardBackgroundColor(ContextCompat.getColor(audioReminderHolder.getCardView().getContext(), R.color.md_red_200));
                     audioReminderHolder.getSeekBar().setEnabled(false);
-                    audioReminderHolder.setTime("File Error "+format.format(audioReminder.getTime()));
+                    audioReminderHolder.setTime("File Error " + format.format(audioReminder.getTime()));
                     audioReminderHolder.getPlayButton().setOnClickListener(null);
                 }
                 audioReminderHolder.setRecord_time(audioReminder.getRecordTime());

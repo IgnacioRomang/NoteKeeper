@@ -4,8 +4,6 @@ package romang.montejo.moya.Persistence;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-import java.util.Date;
-
 import romang.montejo.moya.Model.AudioReminder;
 import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.TextReminder;

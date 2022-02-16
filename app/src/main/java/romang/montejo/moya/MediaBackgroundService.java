@@ -1,6 +1,5 @@
 package romang.montejo.moya;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -11,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -37,11 +35,49 @@ public class MediaBackgroundService extends MediaBrowserServiceCompat implements
     private static String uri;
     private static MediaPlayer mediaPlayer;
     private MediaSessionCompat mediaSession;
+    public MediaSessionCompat.Callback callback = new MediaSessionCompat.Callback() {
+        @Override
+        public void onPlay() {
+            if (audioFocus()) {
+                super.onPlay();
+                mediaSession.setActive(true);
+                setState(PlaybackStateCompat.STATE_PLAYING);
+            }
+        }
 
-    public void startNotification(Context context,String inUri) {
+        @Override
+        public void onPlayFromUri(Uri uri, Bundle extras) {
+            super.onPlayFromUri(uri, extras);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+        }
+
+        @Override
+        public void onSeekTo(long pos) {
+            super.onSeekTo(pos);
+        }
+    };
+    private BroadcastReceiver nReciver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            }
+        }
+    };
+
+    public void startNotification(Context context, String inUri) {
         MediaControllerCompat controller = mediaSession.getController();
         MediaMetadataCompat mediaMetadata = controller.getMetadata();
-        uri=inUri;
+        uri = inUri;
         MediaDescriptionCompat description = mediaMetadata.getDescription();
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.green_audio);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -74,46 +110,6 @@ public class MediaBackgroundService extends MediaBrowserServiceCompat implements
         playbackstateBuilder.setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 0);
         mediaSession.setPlaybackState(playbackstateBuilder.build());
     }
-
-    public MediaSessionCompat.Callback callback = new MediaSessionCompat.Callback() {
-        @Override
-        public void onPlay() {
-            if (audioFocus()) {
-                super.onPlay();
-                mediaSession.setActive(true);
-                setState(PlaybackStateCompat.STATE_PLAYING);
-            }
-        }
-
-        @Override
-        public void onPlayFromUri(Uri uri, Bundle extras) {
-            super.onPlayFromUri(uri, extras);
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-        }
-
-        @Override
-        public void onStop() {
-            super.onStop();
-        }
-
-        @Override
-        public void onSeekTo(long pos) {
-            super.onSeekTo(pos);
-        }
-    };
-
-    private BroadcastReceiver nReciver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
-            }
-        }
-    };
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

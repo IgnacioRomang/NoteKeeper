@@ -64,7 +64,7 @@
         android:id="@+id/findRecFragment"
         android:name="romang.montejo.moya.Fragments.FindRecFragment"
         android:label="Buscar"
-        tools:layout="@layout/fragment_find_rec"/>
+        tools:layout="@layout/fragment_find_rec" />
     <fragment
         android:id="@+id/archivedListFragment"
         android:name="romang.montejo.moya.Fragments.ArchivedListFragment"

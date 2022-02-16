@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
@@ -26,11 +25,10 @@ import romang.montejo.moya.Persistence.StorageManager;
 public class NotificationsManager {
     public static NotificationsManager instance;
     public static Context context;
-    public AlarmManager alarmManager;
-
-    private int importance = NotificationManager.IMPORTANCE_DEFAULT;
-    static private String CHANNEL_NAME = "romang.montejo.moya";
     static public String CHANNEL_ID = "2D2C9FY6ASK2A7PM4EL85E5W";
+    static private String CHANNEL_NAME = "romang.montejo.moya";
+    public AlarmManager alarmManager;
+    private int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
 
     public NotificationsManager() {
@@ -38,8 +36,14 @@ public class NotificationsManager {
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
+    static public NotificationsManager getInstance() {
+        if (instance == null) {
+            instance = new NotificationsManager();
+        }
+        return instance;
+    }
 
-     public void startingLauchNotifications(List<Reminder> reminderList) {
+    public void startingLauchNotifications(List<Reminder> reminderList) {
         if (PreferenceManager.getDefaultSharedPreferences(instance.context).getBoolean("notification", true)) {
             AsyncTask.execute(new Runnable() {
                 @Override
@@ -52,13 +56,6 @@ public class NotificationsManager {
                 }
             });
         }
-    }
-
-    static public NotificationsManager getInstance() {
-        if (instance == null) {
-            instance = new NotificationsManager();
-        }
-        return instance;
     }
 
     public void startingChannel() {
@@ -100,12 +97,10 @@ public class NotificationsManager {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 instance.alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intped);
-            }
-            else {
+            } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     instance.alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intped);
-                }
-                else {
+                } else {
                     instance.alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intped);
                 }
             }

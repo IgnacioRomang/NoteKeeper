@@ -42,16 +42,16 @@ public class TextReminderHolder extends RecyclerView.ViewHolder {
                         }
                     });
                     dialog.show();
-                }
-                else{
-                    Toast.makeText(v.getContext(),v.getContext().getResources().getString(R.string.text_no_size),Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(v.getContext(), v.getContext().getResources().getString(R.string.text_no_size), Toast.LENGTH_LONG).show();
                 }
             }
 
         });
 
     }
-    public ImageView getRemove(){
+
+    public ImageView getRemove() {
         return binding.remove;
     }
 

@@ -11,18 +11,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -37,6 +25,17 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
@@ -47,12 +46,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import romang.montejo.moya.Holders.ReminderAdapter;
 import romang.montejo.moya.Model.Reminder;
-import romang.montejo.moya.Util.NotificationsManager;
 import romang.montejo.moya.Persistence.DbCallBacks;
 import romang.montejo.moya.Persistence.StorageManager;
 import romang.montejo.moya.R;
-import romang.montejo.moya.Holders.ReminderAdapter;
 import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.databinding.FragmentListBinding;
 
@@ -62,15 +60,12 @@ import romang.montejo.moya.databinding.FragmentListBinding;
  * create an instance of this fragment.
  */
 public class ListFragment extends Fragment {
-    private FragmentListBinding binding;
-    private MainViewModel viewModel;
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     private static final int OK_CODE = 0;
     private static final int IMG_CODE = 393963;
-
+    private FragmentListBinding binding;
+    private MainViewModel viewModel;
     private String mParam1;
     private String mParam2;
 

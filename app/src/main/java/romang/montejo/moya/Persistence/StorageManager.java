@@ -1,15 +1,11 @@
 package romang.montejo.moya.Persistence;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.room.OnConflictStrategy;
 import androidx.room.Room;
-import androidx.room.RoomDatabase;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,24 +14,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import romang.montejo.moya.Holders.AudioReminderHolder;
-import romang.montejo.moya.Holders.PhotoReminderHolder;
-import romang.montejo.moya.Holders.TextReminderHolder;
 import romang.montejo.moya.Model.AudioReminder;
 import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.Reminder;
 import romang.montejo.moya.Model.TextReminder;
-import romang.montejo.moya.R;
-import romang.montejo.moya.ViewModels.MainViewModel;
 
 public class StorageManager implements DbCallBacks {
-    private static final String DB_NAME = "romang.montejo.moya.Persistence";
-    private DAO myDao;
-    private static StorageManager instance;
     public static final int NOONE = 0;
     public static final int TEXT_TYPE = 1;
     public static final int IMG_TYPE = 2;
     public static final int AUD_TYPE = 3;
+    private static final String DB_NAME = "romang.montejo.moya.Persistence";
+    private static StorageManager instance;
+    private DAO myDao;
+
+    private StorageManager(Context ctx) {
+        MyRoomDB db = Room.databaseBuilder(ctx, MyRoomDB.class, DB_NAME).fallbackToDestructiveMigration().build();
+        myDao = db.Dao();
+    }
 
     public static int getItemType(Reminder reminder) {
         if (reminder instanceof TextReminder) {
@@ -50,11 +46,6 @@ public class StorageManager implements DbCallBacks {
             }
         }
         return 0;
-    }
-
-    private StorageManager(Context ctx) {
-        MyRoomDB db = Room.databaseBuilder(ctx, MyRoomDB.class, DB_NAME).fallbackToDestructiveMigration().build();
-        myDao = db.Dao();
     }
 
     public static StorageManager getInstance(Context ctx) {
@@ -166,7 +157,7 @@ public class StorageManager implements DbCallBacks {
                 }
                 Date today = new Date();
                 //
-                today.setMinutes(today.getMinutes() -1);// 5 min antes
+                today.setMinutes(today.getMinutes() - 1);// 5 min antes
                 callback.result(boolresult, result.stream().filter((x) -> x.getTime() <= today.getTime()).collect(Collectors.toList()));
             }
         });

@@ -1,5 +1,11 @@
 package romang.montejo.moya.Activitys;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,19 +20,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import romang.montejo.moya.ViewModels.MainViewModel;
-import romang.montejo.moya.Model.Reminder;
 import romang.montejo.moya.R;
 import romang.montejo.moya.Util.NotificationsManager;
+import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             //start.postValue(true);
         }
     };
+
     @Override
     protected void attachBaseContext(Context baseContext) {
         super.attachBaseContext(baseContext);
@@ -53,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        NotificationsManager.context=getApplicationContext();
+        NotificationsManager.context = getApplicationContext();
         //NotificationsManager notificationsManager = NotificationsManager.getInstance(getBaseContext());
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
@@ -105,12 +103,13 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if(binding.progressBar.getVisibility()== View.VISIBLE && destination.getId()!=R.id.listFragment){
-                    binding.progressBar.setVisibility(View.INVISIBLE );
+                if (binding.progressBar.getVisibility() == View.VISIBLE && destination.getId() != R.id.listFragment) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
                 }
             }
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         if (!(navController.navigateUp() || super.onSupportNavigateUp())) {

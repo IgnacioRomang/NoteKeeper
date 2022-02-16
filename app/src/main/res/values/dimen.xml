@@ -8,6 +8,6 @@
     <dimen name="title_text">16sp</dimen>
     <dimen name="song_text">12sp</dimen>
     <dimen name="card_loading">200sp</dimen>
-    <dimen name="titles"> 20sp</dimen>
+    <dimen name="titles">20sp</dimen>
 
 </resources>

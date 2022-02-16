@@ -8,15 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "TextReminder")
-public class TextReminder extends Reminder implements Parcelable{
-    @PrimaryKey(autoGenerate = true)
-    private Integer id;
-    private String reminderText;
-
-    protected TextReminder(Parcel in) {
-        this(in.readString(), in.readLong(), in.readBoolean(), in.readString());
-    }
-
+public class TextReminder extends Reminder implements Parcelable {
     public static final Creator<TextReminder> CREATOR = new Creator<TextReminder>() {
         @Override
         public TextReminder createFromParcel(Parcel in) {
@@ -28,22 +20,32 @@ public class TextReminder extends Reminder implements Parcelable{
             return new TextReminder[size];
         }
     };
+    @PrimaryKey(autoGenerate = true)
+    private Integer id;
+    private String reminderText;
 
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getReminderText() {
-        return reminderText;
-    }
-    public void setReminderText(String reminderText) {
-        this.reminderText = reminderText;
+    protected TextReminder(Parcel in) {
+        this(in.readString(), in.readLong(), in.readBoolean(), in.readString());
     }
 
     public TextReminder(String title, Long time, Boolean noti, String reminderText) {
         super(title, time, noti);
+        this.reminderText = reminderText;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getReminderText() {
+        return reminderText;
+    }
+
+    public void setReminderText(String reminderText) {
         this.reminderText = reminderText;
     }
 

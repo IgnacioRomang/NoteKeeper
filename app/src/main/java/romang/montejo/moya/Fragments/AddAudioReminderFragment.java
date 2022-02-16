@@ -10,6 +10,11 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -17,12 +22,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-
-import android.os.Environment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import com.devlomi.record_view.OnRecordListener;
 import com.devlomi.record_view.RecordPermissionHandler;
@@ -37,8 +36,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.R;
+import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.databinding.FragmentAddAudioReminderBinding;
 
 /**
@@ -48,21 +47,18 @@ import romang.montejo.moya.databinding.FragmentAddAudioReminderBinding;
  */
 public class AddAudioReminderFragment extends Fragment {
 
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     private FragmentAddAudioReminderBinding binding;
     private MediaPlayer mediaPlayer;
     private MediaRecorder mediaRecorder;
     //private String fileName;
     private File file;
     private long record_time;
-
     private MainViewModel viewModel;
     private MaterialDatePicker datePicker;
     private MaterialTimePicker timePicker;
     private MutableLiveData<Calendar> calendarLiveData;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private String mParam1;
     private String mParam2;
 
@@ -79,18 +75,21 @@ public class AddAudioReminderFragment extends Fragment {
         return fragment;
     }
 
-    public void finishJob(){
-        viewModel.currentPath= file.getAbsolutePath();
+    public void finishJob() {
+        viewModel.currentPath = file.getAbsolutePath();
         String title = binding.tituloEditText.getText().toString();
-        if(title.isEmpty()){
+        if (title.isEmpty()) {
             title = file.getName();
         }
-        if(mediaPlayer.isPlaying()){mediaPlayer.stop();}
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
         viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
-        viewModel.createAudioReminder(title,binding.checkNotif.isChecked(),record_time);
+        viewModel.createAudioReminder(title, binding.checkNotif.isChecked(), record_time);
         file = null;
         NavHostFragment.findNavController(AddAudioReminderFragment.this).navigate(R.id.action_addAudioReminderFragment_to_listFragment);
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,7 +148,7 @@ public class AddAudioReminderFragment extends Fragment {
                 mediaRecorder.release();
                 mediaRecorder = null;
                 record_time = recordTime;
-                mediaPlayer= MediaPlayer.create(getContext(), Uri.fromFile(file));
+                mediaPlayer = MediaPlayer.create(getContext(), Uri.fromFile(file));
                 binding.visualizerLineBar.setVisibility(View.VISIBLE);
                 binding.visualizerLineBar.setColor(getContext().getColor(R.color.md_blue_200));
                 binding.visualizerLineBar.setDensity(60);
@@ -199,10 +198,9 @@ public class AddAudioReminderFragment extends Fragment {
                         dialog.cancel();
                     }
                 });
-                if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-360*1000)&& binding.checkNotif.isChecked()){
+                if (calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis() - 360 * 1000) && binding.checkNotif.isChecked()) {
                     dialog.show();
-                }
-                else{
+                } else {
                     finishJob();
                 }
             }
@@ -240,13 +238,13 @@ public class AddAudioReminderFragment extends Fragment {
         timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.getCalendarMutableLiveData().postValue(viewModel.setTime(calendarLiveData.getValue(),timePicker.getHour(),timePicker.getMinute()));
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setTime(calendarLiveData.getValue(), timePicker.getHour(), timePicker.getMinute()));
             }
         });
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long selection) {
-                viewModel.getCalendarMutableLiveData().postValue(viewModel.setDate(calendarLiveData.getValue(),selection));
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setDate(calendarLiveData.getValue(), selection));
             }
         });
         viewModel.getCalendarMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Calendar>() {

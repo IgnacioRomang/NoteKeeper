@@ -14,16 +14,15 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import romang.montejo.moya.Activitys.MediaPlayerActivity;
 import romang.montejo.moya.Model.AudioReminder;
 import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.TextReminder;
-import romang.montejo.moya.Util.NotificationsManager;
 import romang.montejo.moya.Persistence.StorageManager;
-import romang.montejo.moya.Activitys.MediaPlayerActivity;
 import romang.montejo.moya.R;
 import romang.montejo.moya.Util.ParcelableUtil;
 
-public class ReminderBroadcaster extends BroadcastReceiver{
+public class ReminderBroadcaster extends BroadcastReceiver {
     static public String CHANNEL_ID = "2D2C9FY6ASK2A7PM4EL85E5W";
     public NotificationCompat.Builder nBuilder;
 
@@ -32,7 +31,7 @@ public class ReminderBroadcaster extends BroadcastReceiver{
         Bundle extras = intent.getExtras();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            nBuilder = new NotificationCompat.Builder(context,CHANNEL_ID);
+            nBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
         } else {
             nBuilder = new NotificationCompat.Builder(context);
         }
@@ -81,7 +80,7 @@ public class ReminderBroadcaster extends BroadcastReceiver{
         }
 
 
-        Log.w("Nacho develop",nBuilder.build().getChannelId());
+        Log.w("Nacho develop", nBuilder.build().getChannelId());
         notificationManager.notify(nBuilder.hashCode(), nBuilder.build());
 
     }

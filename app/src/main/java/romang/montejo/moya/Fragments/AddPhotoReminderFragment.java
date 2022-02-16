@@ -4,18 +4,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -24,8 +23,8 @@ import com.google.android.material.timepicker.TimeFormat;
 
 import java.util.Calendar;
 
-import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.R;
+import romang.montejo.moya.ViewModels.MainViewModel;
 import romang.montejo.moya.databinding.FragmentAddPhotoReminderBinding;
 
 /**
@@ -35,19 +34,16 @@ import romang.montejo.moya.databinding.FragmentAddPhotoReminderBinding;
  */
 public class AddPhotoReminderFragment extends Fragment {
 
-    private FragmentAddPhotoReminderBinding binding;
-    private MainViewModel viewModel;
-    private MaterialDatePicker datePicker;
-    private MaterialTimePicker timePicker;
-    private static Boolean error;
-    private MutableLiveData<Calendar> calendarLiveData;
-
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private static Boolean error;
+    private FragmentAddPhotoReminderBinding binding;
+    private MainViewModel viewModel;
+    private MaterialDatePicker datePicker;
+    private MaterialTimePicker timePicker;
+    private MutableLiveData<Calendar> calendarLiveData;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -110,13 +106,13 @@ public class AddPhotoReminderFragment extends Fragment {
         timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.getCalendarMutableLiveData().postValue(viewModel.setTime(calendarLiveData.getValue(),timePicker.getHour(),timePicker.getMinute()));
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setTime(calendarLiveData.getValue(), timePicker.getHour(), timePicker.getMinute()));
             }
         });
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long selection) {
-                viewModel.getCalendarMutableLiveData().postValue(viewModel.setDate(calendarLiveData.getValue(),selection));
+                viewModel.getCalendarMutableLiveData().postValue(viewModel.setDate(calendarLiveData.getValue(), selection));
             }
         });
         // TODO: 10/1/2022 Realizar los observers de los livedata
@@ -183,10 +179,9 @@ public class AddPhotoReminderFragment extends Fragment {
                             dialog.cancel();
                         }
                     });
-                    if(calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis()-360*1000)&& binding.checkNotif.isChecked()){
+                    if (calendarLiveData.getValue().getTimeInMillis() <= (Calendar.getInstance().getTimeInMillis() - 360 * 1000) && binding.checkNotif.isChecked()) {
                         dialog.show();
-                    }
-                    else{
+                    } else {
                         finishJob();
                     }
                 }
@@ -196,9 +191,12 @@ public class AddPhotoReminderFragment extends Fragment {
         //viewModel.createPhotoReminder(Bitmap);
         return binding.getRoot();
     }
-    public void finishJob(){
+
+    public void finishJob() {
         viewModel.getCalendarMutableLiveData().setValue(calendarLiveData.getValue());
-        viewModel.createPhotoReminder(binding.tituloEditText.getText().toString(),binding.checkNotif.isChecked());
+        viewModel.createPhotoReminder(binding.tituloEditText.getText().toString(), binding.checkNotif.isChecked());
         NavHostFragment.findNavController(AddPhotoReminderFragment.this).navigate(R.id.action_addPhotoReminderFragment_to_listFragment);
-    };
+    }
+
+    ;
 }

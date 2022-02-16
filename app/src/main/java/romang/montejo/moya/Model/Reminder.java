@@ -1,12 +1,15 @@
 package romang.montejo.moya.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class Reminder{
+public class Reminder {
     private String title;
     private Long time;
     private Boolean noti;
+
+    public Reminder(String title, Long time, Boolean noti) {
+        this.title = title;
+        this.time = time;
+        this.noti = noti;
+    }
 
     public String getTitle() {
         return title;
@@ -29,12 +32,6 @@ public class Reminder{
     }
 
     public void setNoti(Boolean noti) {
-        this.noti = noti;
-    }
-
-    public Reminder(String title, Long time, Boolean noti) {
-        this.title = title;
-        this.time = time;
         this.noti = noti;
     }
 }

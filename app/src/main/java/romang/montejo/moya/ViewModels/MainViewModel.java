@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import romang.montejo.moya.Holders.ReminderAdapter;
 import romang.montejo.moya.Model.AudioReminder;
 import romang.montejo.moya.Model.PhotoReminder;
 import romang.montejo.moya.Model.Reminder;
 import romang.montejo.moya.Model.TextReminder;
-import romang.montejo.moya.Holders.ReminderAdapter;
 import romang.montejo.moya.Persistence.DbCallBacks;
 import romang.montejo.moya.Persistence.StorageManager;
 import romang.montejo.moya.R;
@@ -29,8 +29,9 @@ public class MainViewModel extends ViewModel {
     public MutableLiveData<Boolean> resultSave;
     public ReminderAdapter adapter;
     public String currentPath;
-    private Context context;
     public Bitmap photo;
+    public MutableLiveData<Boolean> result;
+    private Context context;
 
     public MutableLiveData<Boolean> getResult() {
         if (result == null) {
@@ -39,8 +40,6 @@ public class MainViewModel extends ViewModel {
         }
         return result;
     }
-
-    public MutableLiveData<Boolean> result;
 
     public Context getContext() {
         return context;
