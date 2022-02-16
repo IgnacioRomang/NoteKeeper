@@ -72,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
         /*
         List<Reminder> lista = new ArrayList<>();
-        AudioReminder test1 = new AudioReminder("hOLA",new Long(1321321),true);
-        test1.setFilePath("SADADAS");
-        PhotoReminder test2 = new PhotoReminder("Esto no tiene foto",new Long(1321321),true);
-        test2.setCurrentPhotoPath("fasfasafsfa");
+        AudioReminder test1 = new AudioReminder("Audio sin audio",new Long(1321321),true);
+        test1.setFilePath("No path");
+        PhotoReminder test2 = new PhotoReminder("Foto sin Foto",new Long(1321321),true);
+        test2.setCurrentPhotoPath("No path");
         lista.add(test1);
         lista.add(test2);
         */
