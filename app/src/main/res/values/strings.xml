@@ -1,3 +1,37 @@
 <resources>
     <string name="app_name">Note Keeper</string>
+    <string name="crea_tu_recordatorio_text">Crea tu Recordatorio Textual</string>
+    <string name="crea_tu_recordatorio_photo">Crea tu Recordatorio Visual</string>
+    <string name="titulo">Titulo</string>
+    <string name="notificar">Notificar</string>
+    <string name="contenido">Contenido</string>
+    <string name="textview">TextView</string>
+    <string name="permisos_camera_error">No se poseen los permisos</string>
+    <string name="no_titulo">Ingrese el titulo</string>
+    <string name="no_reminder">Ingrese un Recordatorio</string>
+    <string name="patronTime">dd/MM/YYYY - HH:mm</string>
+    <string name="error_text_reminder">Ups! Algo salio mal al crear el recordatorio. Por favor vuelva a intentarlo</string>
+    <string name="datePicker">Seleccioné un Fecha</string>
+    <string name="save_ok">Recordatorio guardado</string>
+    <string name="save_sad">No se pudo guardar, inténtelo nuevamente</string>
+    <string name="text_no_size">El texto del recordatorio no tiene más lineas</string>
+    <string name="crea_tu_recordatorio_audio">Grabador de voz</string>
+    <string name="loadingScreen">Cargando Recordatorios...</string>
+    <string name="noreminders">No tiene Recordatorios</string>
+    <string name="fuentes">Fuentes</string>
+    <string name="archived">Archivados</string>
+    <string name="text">Texto</string>
+    <string name="photo">Fotos</string>
+    <string name="audio">Audio</string>
+    <string name="oldies">Futuros</string>
+    <string name="find">Buscar</string>
+    <string name="no_text_search">Complete el campo de búsqueda</string>
+    <string name="summaryNofText">Notificacion desde NoteKeeper</string>
+    <string name="adv_titulo">Advertencia</string>
+    <string name="adv_content">Usted está agregando un recordatorio para una fecha/hora anterior a la actual. Si acepta no recibirá notificaciones y su recordatorio se guardara en la sección de archivados</string>
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="title_activity_player">PlayerActivity</string>
+    <string name="delete_title">Borrando Recordatorio</string>
+    <string name="delete_content">Seguro que desea borrar este recordatorio?</string>
 </resources>

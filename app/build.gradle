@@ -4,6 +4,9 @@ plugins {
 
 android {
     compileSdk 31
+    viewBinding {
+        enabled = true
+    }
 
     defaultConfig {
         applicationId "romang.montejo.moya"
@@ -25,9 +28,31 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
+    implementation 'androidx.media2:media2:1.0.0-alpha04'
+    def room_version = "2.4.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    def nav_version = "2.3.5"
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+
+
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.preference:preference:1.1.1'
+
+    implementation "com.leinardi.android:speed-dial:3.2.0"
+
+    implementation 'com.github.3llomi:RecordView:3.0.2'
+    implementation 'com.chibde:audiovisualizer:2.2.0'
 
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'

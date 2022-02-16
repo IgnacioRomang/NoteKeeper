@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_elev">3dp</dimen>
+    <dimen name="card_rad">8dp</dimen>
+    <dimen name="card_pading">5dp</dimen>
+
+    <dimen name="fecha_text">12sp</dimen>
+    <dimen name="title_text">16sp</dimen>
+    <dimen name="song_text">12sp</dimen>
+    <dimen name="card_loading">200sp</dimen>
+    <dimen name="titles"> 20sp</dimen>
+
+</resources>
